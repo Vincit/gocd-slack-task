@@ -1,0 +1,32 @@
+<div class="form_item_block">
+  <label>Channel:</label>
+  <input type="text" ng-model="Channel" ng-required="false">
+  </input>
+  <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
+    {{ GOINPUTNAME[Channel].$error.server }}
+  </span>
+</div>
+<div class="form_item_block">
+  <label>Title:</label>
+  <input type="text" ng-model="Title" ng-required="false">
+  </input>
+  <span class="form_error" ng-show="GOINPUTNAME[Title].$error.server">
+    {{ GOINPUTNAME[Title].$error.server }}
+  </span>
+</div>
+<div class="form_item_block">
+  <label>Icon or Emoji:</label>
+  <input type="text" ng-model="IconOrEmoji" ng-required="false">
+  </input>
+  <span class="form_error" ng-show="GOINPUTNAME[IconOrEmoji].$error.server">
+    {{ GOINPUTNAME[IconOrEmoji].$error.server }}
+  </span>
+</div>
+<div class="form_item_block">
+  <label>Channel:</label>
+  <textarea ng-model="Message" ng-required="false">
+  </textarea>
+  <span class="form_error" ng-show="GOINPUTNAME[Message].$error.server">
+    {{ GOINPUTNAME[Message].$error.server }}
+  </span>
+</div>

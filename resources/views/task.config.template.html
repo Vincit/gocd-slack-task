@@ -1,0 +1,7 @@
+<div class="form_item_block">
+  <label>Webhook URL:<span class="asterisk">*</span></label>
+  <input type="text" ng-model="webhookUrl" ng-required="true"/>
+    <span class="form_error" ng-show="GOINPUTNAME[webhookUrl].$error.server">
+        {{ GOINPUTNAME[webhookUrl].$error.server }}
+    </span>
+</div>
