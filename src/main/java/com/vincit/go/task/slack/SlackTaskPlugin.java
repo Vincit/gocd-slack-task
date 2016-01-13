@@ -152,14 +152,23 @@ public class SlackTaskPlugin implements GoPlugin {
         String webhookUrl = slackConfig.getWebhookUrl();
         com.vincit.go.task.slack.SlackExecutor executor = new com.vincit.go.task.slack.SlackExecutor(webhookUrl);
 
+        String messageStr = replaceWithEnvVars(
+                (String)((Map)config.get(MESSAGE)).get("value"),
+                ((Map<String, String>)context.get("environmentVariables"))
+        );
+
         SlackMessage message = new SlackMessage(
                 (String)((Map)config.get(TITLE)).get("value"),
-                (String)((Map)config.get(MESSAGE)).get("value"),
+                messageStr,
                 (String)((Map)config.get(ICON_OR_EMOJI)).get("value")
         );
         executor.sendMessage((String)((Map)config.get(CHANNEL)).get("value"), message);
 
         return createResponse(200, new HashMap());
+    }
+
+    private String replaceWithEnvVars(String value, Map context) {
+        return null;
     }
 
     private GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
