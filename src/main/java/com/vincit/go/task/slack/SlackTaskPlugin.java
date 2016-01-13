@@ -25,6 +25,9 @@ import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.*;
+import com.vincit.go.task.slack.model.Config;
+import com.vincit.go.task.slack.model.Context;
+import com.vincit.go.task.slack.model.TaskConfig;
 import com.vincit.go.task.slack.utils.JSONUtils;
 
 import java.io.IOException;
@@ -146,26 +149,26 @@ public class SlackTaskPlugin implements GoPlugin {
     private GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) {
         logger.info("handleTaskExecution");
 
-        Map executionRequest = (Map) new GsonBuilder().create().fromJson(request.requestBody(), Object.class);
-        Map config = (Map) executionRequest.get("config");
-        Map context = (Map) executionRequest.get("context");
+        TaskConfig executionRequest = new GsonBuilder().create().fromJson(request.requestBody(), TaskConfig.class);
+        Config config = executionRequest.getConfig();
+        Context context = executionRequest.getContext();
 
-        com.vincit.go.task.slack.SlackConfig slackConfig = getSlackConfigFromGo();
+        SlackConfig slackConfig = getSlackConfigFromGo();
 
         String webhookUrl = slackConfig.getWebhookUrl();
         com.vincit.go.task.slack.SlackExecutor executor = new com.vincit.go.task.slack.SlackExecutor(webhookUrl);
 
         String messageStr = replaceWithEnvVars(
-                (String)((Map)config.get(MESSAGE)).get("value"),
-                ((Map<String, String>)context.get("environmentVariables"))
+                config.getMessage(),
+                context.getEnvironmentVariables()
         );
 
         SlackMessage message = new SlackMessage(
-                (String)((Map)config.get(TITLE)).get("value"),
+                config.getTitle(),
                 messageStr,
-                (String)((Map)config.get(ICON_OR_EMOJI)).get("value")
+                config.getIconOrEmoji()
         );
-        executor.sendMessage((String)((Map)config.get(CHANNEL)).get("value"), message);
+        executor.sendMessage(config.getChannel(), message);
 
         return createResponse(200, new HashMap());
     }
