@@ -33,7 +33,9 @@ import com.vincit.go.task.slack.utils.JSONUtils;
 import java.io.IOException;
 import java.util.*;
 
+import static com.vincit.go.task.slack.utils.FieldUtils.createField;
 import static com.vincit.go.task.slack.utils.FileUtils.getFileContents;
+import static com.vincit.go.task.slack.utils.JSONUtils.responseAsJson;
 import static com.vincit.go.task.slack.utils.MessageUtil.replaceWithEnvVars;
 
 @Extension
@@ -43,6 +45,13 @@ public class SlackTaskPlugin implements GoPlugin {
     public static final String MESSAGE = "Message";
     public static final String TITLE = "Title";
     public static final String ICON_OR_EMOJI = "IconOrEmoji";
+    public static final String EXTENSION_ID = "task";
+    public static final String PLUGIN_ID = "slack.task";
+    public static final String WEBHOOK_URL = "webhookUrl";
+
+    public static final int SUCCESS_RESPONSE_CODE = 200;
+    public static final int ERROR_RESPONSE_CODE = 500;
+
     private Logger logger = Logger.getLoggerFor(SlackTaskPlugin.class);
 
     public static final String GET_PLUGIN_SETTINGS = "go.processor.plugin-settings.get";
@@ -73,7 +82,7 @@ public class SlackTaskPlugin implements GoPlugin {
                 return handlePluginConfigView();
             } catch (IOException e) {
                 String message = "Failed to find template: " + e.getMessage();
-                return renderJSON(500, message);
+                return responseAsJson(ERROR_RESPONSE_CODE, message);
             }
         } else if ("go.plugin-settings.validate-configuration".equals(request.requestName())) {
             return handleValidatePluginSettingsConfiguration(request);
@@ -83,52 +92,32 @@ public class SlackTaskPlugin implements GoPlugin {
 
     private GoPluginApiResponse handleValidatePluginSettingsConfiguration(GoPluginApiRequest goPluginApiRequest) {
         List<Map<String, Object>> response = new ArrayList<>();
-        return renderJSON(200, response);
+        return responseAsJson(SUCCESS_RESPONSE_CODE, response);
     }
 
-    private GoPluginApiResponse renderJSON(final int responseCode, Object response) {
-        final String json = response == null ? null : new GsonBuilder().create().toJson(response);
-        return new GoPluginApiResponse() {
-            @Override
-            public int responseCode() {
-                return responseCode;
-            }
-
-            @Override
-            public Map<String, String> responseHeaders() {
-                return null;
-            }
-
-            @Override
-            public String responseBody() {
-                return json;
-            }
-        };
-    }
-
-    private com.vincit.go.task.slack.SlackConfig getSlackConfigFromGo() {
+    private SlackConfig getSlackConfigFromGo() {
         Map<String, Object> requestMap = new HashMap<String, Object>();
-        requestMap.put("plugin-id", "slack.task");
+        requestMap.put("plugin-id", PLUGIN_ID);
         GoApiResponse response = goApplicationAccessor.submit(com.vincit.go.task.slack.GoRequestFactory.createGoApiRequest(GET_PLUGIN_SETTINGS, JSONUtils.toJSON(requestMap)));
 
         Map<String, String> responseMap = response.responseBody() == null ?
                 new HashMap<String, String>() :
                 (Map<String, String>) JSONUtils.fromJSON(response.responseBody());
 
-        return new com.vincit.go.task.slack.SlackConfig(responseMap.get("webhookUrl"));
+        return new SlackConfig(responseMap.get(WEBHOOK_URL));
     }
 
     private GoPluginApiResponse handlePluginConfigView() throws IOException {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("displayValue", "Slack Task");
         response.put("template", getFileContents("/views/task.config.template.html"));
-        return createResponse(200, response);
+        return responseAsJson(SUCCESS_RESPONSE_CODE, response);
     }
 
     private GoPluginApiResponse handlePluginConfig() {
         Map<String, Object> response = new HashMap<String, Object>();
-        response.put("webhookUrl", createField("Webhook URL", 0, true));
-        return renderJSON(200, response);
+        response.put(WEBHOOK_URL, createField("Webhook URL", 0, true));
+        return responseAsJson(SUCCESS_RESPONSE_CODE, response);
     }
 
     private GoPluginApiResponse handleTaskView() {
@@ -143,7 +132,7 @@ public class SlackTaskPlugin implements GoPlugin {
             view.put("exception", errorMessage);
             logger.error(errorMessage, e);
         }
-        return createResponse(responseCode, view);
+        return responseAsJson(responseCode, view);
     }
 
     private GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) {
@@ -170,13 +159,13 @@ public class SlackTaskPlugin implements GoPlugin {
         );
         executor.sendMessage(config.getChannel(), message);
 
-        return createResponse(200, new HashMap());
+        return responseAsJson(SUCCESS_RESPONSE_CODE, new HashMap());
     }
 
     private GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
         HashMap validationResult = new HashMap();
         int responseCode = DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE;
-        return createResponse(responseCode, validationResult);
+        return responseAsJson(responseCode, validationResult);
     }
 
     private GoPluginApiResponse handleGetConfigRequest() {
@@ -185,26 +174,11 @@ public class SlackTaskPlugin implements GoPlugin {
         config.put(TITLE, createField("Title", 1, false));
         config.put(ICON_OR_EMOJI, createField("Icon or Emoji", 2, false));
         config.put(MESSAGE, createField("Message", 3, false));
-        return createResponse(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
-    }
-
-    private HashMap createField(String name, int order, boolean required) {
-        HashMap field = new HashMap();
-        field.put("default-value", "");
-        field.put("display-order", Integer.toString(order));
-        field.put("display-name", name);
-        field.put("required", required);
-        return field;
-    }
-
-    private GoPluginApiResponse createResponse(int responseCode, Map body) {
-        final DefaultGoPluginApiResponse response = new DefaultGoPluginApiResponse(responseCode);
-        response.setResponseBody(new GsonBuilder().serializeNulls().create().toJson(body));
-        return response;
+        return responseAsJson(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
     }
 
     @Override
     public GoPluginIdentifier pluginIdentifier() {
-        return new GoPluginIdentifier("task", Arrays.asList("1.0"));
+        return new GoPluginIdentifier(EXTENSION_ID, Arrays.asList("1.0"));
     }
 }

@@ -1,6 +1,8 @@
 package com.vincit.go.task.slack.utils;
 
 import com.google.gson.*;
+import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
+import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,5 +25,11 @@ public class JSONUtils {
         }
 
         return map;
+    }
+
+    public static GoPluginApiResponse responseAsJson(int responseCode, Object body) {
+        final DefaultGoPluginApiResponse response = new DefaultGoPluginApiResponse(responseCode);
+        response.setResponseBody(new GsonBuilder().serializeNulls().create().toJson(body));
+        return response;
     }
 }
