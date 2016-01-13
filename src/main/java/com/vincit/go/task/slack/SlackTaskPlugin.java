@@ -26,10 +26,12 @@ import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.*;
 import com.vincit.go.task.slack.utils.JSONUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.util.*;
+
+import static com.vincit.go.task.slack.utils.FileUtils.getFileContents;
+import static com.vincit.go.task.slack.utils.MessageUtil.replaceWithEnvVars;
 
 @Extension
 public class SlackTaskPlugin implements GoPlugin {
@@ -116,7 +118,7 @@ public class SlackTaskPlugin implements GoPlugin {
     private GoPluginApiResponse handlePluginConfigView() throws IOException {
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("displayValue", "Slack Task");
-        response.put("template", IOUtils.toString(getClass().getResourceAsStream("/views/task.config.template.html"), "UTF-8"));
+        response.put("template", getFileContents("/views/task.config.template.html"));
         return createResponse(200, response);
     }
 
@@ -131,7 +133,7 @@ public class SlackTaskPlugin implements GoPlugin {
         HashMap view = new HashMap();
         view.put("displayValue", "Slack");
         try {
-            view.put("template", IOUtils.toString(getClass().getResourceAsStream("/views/task.template.html"), "UTF-8"));
+            view.put("template", getFileContents("/views/task.template.html"));
         } catch (Exception e) {
             responseCode = DefaultGoApiResponse.INTERNAL_ERROR;
             String errorMessage = "Failed to find template: " + e.getMessage();
@@ -166,10 +168,6 @@ public class SlackTaskPlugin implements GoPlugin {
         executor.sendMessage((String)((Map)config.get(CHANNEL)).get("value"), message);
 
         return createResponse(200, new HashMap());
-    }
-
-    private String replaceWithEnvVars(String value, Map context) {
-        return null;
     }
 
     private GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
