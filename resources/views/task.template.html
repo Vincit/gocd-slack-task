@@ -23,8 +23,8 @@
   </span>
 </div>
 <div class="form_item_block">
-  <label>Channel:</label>
-  <textarea ng-model="Message" ng-required="false">
+  <label>Message:</label>
+  <textarea cols="50" rows="5" ng-model="Message" ng-required="false">
   </textarea>
   <span class="form_error" ng-show="GOINPUTNAME[Message].$error.server">
     {{ GOINPUTNAME[Message].$error.server }}
