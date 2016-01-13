@@ -1,4 +1,4 @@
-package com.vincit.go.task.slack.curl;
+package com.vincit.go.task.slack;
 
 import in.ashwanthkumar.slack.webhook.Slack;
 

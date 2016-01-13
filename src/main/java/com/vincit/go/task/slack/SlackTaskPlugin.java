@@ -14,7 +14,7 @@
  * limitations under the License.
  *************************GO-LICENSE-END***********************************/
 
-package com.vincit.go.task.slack.curl;
+package com.vincit.go.task.slack;
 
 import com.google.gson.GsonBuilder;
 import com.thoughtworks.go.plugin.api.GoApplicationAccessor;
@@ -25,13 +25,10 @@ import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.*;
-import com.vincit.go.task.slack.curl.utils.JSONUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
 import java.util.*;
-
-import static com.vincit.go.task.slack.curl.utils.GoRequestFactory.createGoApiRequest;
 
 @Extension
 public class SlackTaskPlugin implements GoPlugin {
@@ -103,16 +100,16 @@ public class SlackTaskPlugin implements GoPlugin {
         };
     }
 
-    private SlackConfig getSlackConfigFromGo() {
+    private com.vincit.go.task.slack.SlackConfig getSlackConfigFromGo() {
         Map<String, Object> requestMap = new HashMap<String, Object>();
         requestMap.put("plugin-id", "slack.task");
-        GoApiResponse response = goApplicationAccessor.submit(createGoApiRequest(GET_PLUGIN_SETTINGS, JSONUtils.toJSON(requestMap)));
+        GoApiResponse response = goApplicationAccessor.submit(com.vincit.go.task.slack.GoRequestFactory.createGoApiRequest(GET_PLUGIN_SETTINGS, com.vincit.go.task.slack.JSONUtils.toJSON(requestMap)));
 
         Map<String, String> responseMap = response.responseBody() == null ?
                 new HashMap<String, String>() :
-                (Map<String, String>) JSONUtils.fromJSON(response.responseBody());
+                (Map<String, String>) com.vincit.go.task.slack.JSONUtils.fromJSON(response.responseBody());
 
-        return new SlackConfig(responseMap.get("webhookUrl"));
+        return new com.vincit.go.task.slack.SlackConfig(responseMap.get("webhookUrl"));
     }
 
     private GoPluginApiResponse handlePluginConfigView() throws IOException {
@@ -150,10 +147,10 @@ public class SlackTaskPlugin implements GoPlugin {
         Map config = (Map) executionRequest.get("config");
         Map context = (Map) executionRequest.get("context");
 
-        SlackConfig slackConfig = getSlackConfigFromGo();
+        com.vincit.go.task.slack.SlackConfig slackConfig = getSlackConfigFromGo();
 
         String webhookUrl = slackConfig.getWebhookUrl();
-        SlackExecutor executor = new SlackExecutor(webhookUrl);
+        com.vincit.go.task.slack.SlackExecutor executor = new com.vincit.go.task.slack.SlackExecutor(webhookUrl);
 
         SlackMessage message = new SlackMessage(
                 (String)((Map)config.get(TITLE)).get("value"),

@@ -14,7 +14,7 @@
  * limitations under the License.
  *************************GO-LICENSE-END***********************************/
 
-package com.vincit.go.task.slack.curl;
+package com.vincit.go.task.slack;
 
 import java.util.Map;
 

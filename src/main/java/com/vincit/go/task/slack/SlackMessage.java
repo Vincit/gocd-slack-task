@@ -1,4 +1,4 @@
-package com.vincit.go.task.slack.curl;
+package com.vincit.go.task.slack;
 
 public class SlackMessage {
 
