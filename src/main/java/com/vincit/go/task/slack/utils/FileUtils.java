@@ -1,4 +1,4 @@
-package com.vincit.go.task.slack;
+package com.vincit.go.task.slack.utils;
 
 import org.apache.commons.io.IOUtils;
 

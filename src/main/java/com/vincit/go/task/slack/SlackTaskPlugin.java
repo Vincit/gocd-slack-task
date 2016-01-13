@@ -25,6 +25,7 @@ import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.*;
+import com.vincit.go.task.slack.utils.JSONUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -103,11 +104,11 @@ public class SlackTaskPlugin implements GoPlugin {
     private com.vincit.go.task.slack.SlackConfig getSlackConfigFromGo() {
         Map<String, Object> requestMap = new HashMap<String, Object>();
         requestMap.put("plugin-id", "slack.task");
-        GoApiResponse response = goApplicationAccessor.submit(com.vincit.go.task.slack.GoRequestFactory.createGoApiRequest(GET_PLUGIN_SETTINGS, com.vincit.go.task.slack.JSONUtils.toJSON(requestMap)));
+        GoApiResponse response = goApplicationAccessor.submit(com.vincit.go.task.slack.GoRequestFactory.createGoApiRequest(GET_PLUGIN_SETTINGS, JSONUtils.toJSON(requestMap)));
 
         Map<String, String> responseMap = response.responseBody() == null ?
                 new HashMap<String, String>() :
-                (Map<String, String>) com.vincit.go.task.slack.JSONUtils.fromJSON(response.responseBody());
+                (Map<String, String>) JSONUtils.fromJSON(response.responseBody());
 
         return new com.vincit.go.task.slack.SlackConfig(responseMap.get("webhookUrl"));
     }

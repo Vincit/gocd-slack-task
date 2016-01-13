@@ -1,4 +1,4 @@
-package com.vincit.go.task.slack;
+package com.vincit.go.task.slack.utils;
 
 import com.google.gson.*;
 
