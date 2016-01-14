@@ -35,7 +35,7 @@ public class Config {
     }
 
     public String getMessage() {
-        return getValueOr(message, null);
+        return getValueOr(message, "");
     }
 
     public String getTitle() {
