@@ -38,8 +38,54 @@ public class ConfigTest {
         assertThat(configWithColor("Danger", null).getColor(), is("danger"));
     }
 
+    @Test
+    public void testChannel() {
+        Config config = configWithChannel("Channel", "test-channel");
+        assertThat(config.getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(config.getChannel(), is("test-channel"));
+    }
+
+    @Test
+    public void testNullChannel() {
+        Config config = configWithChannel("Channel", null);
+        assertThat(config.getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(config.getChannel(), nullValue());
+    }
+
+    @Test
+    public void testEmptyChannel() {
+        Config config = configWithChannel("Channel", "");
+        assertThat(config.getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(config.getChannel(), nullValue());
+    }
+
+    @Test
+    public void testNullUser() {
+        Config config = configWithChannel("User", null);
+        assertThat(config.getChannelType(), is(ChannelType.USER));
+        assertThat(config.getChannel(), nullValue());
+    }
+
+    @Test
+    public void testEmptyUser() {
+        Config config = configWithChannel("User", "");
+        assertThat(config.getChannelType(), is(ChannelType.USER));
+        assertThat(config.getChannel(), nullValue());
+    }
+
+    @Test
+    public void testUser() {
+        Config config = configWithChannel("User", "test.user");
+        assertThat(config.getChannelType(), is(ChannelType.USER));
+        assertThat(config.getChannel(), is("test.user"));
+    }
+
     private Config configWithColor(String colorType, String color) {
         return new Config(null, null, null, null, null, null, null, prop(colorType), prop(color));
+    }
+
+    private Config configWithChannel(String channelType, String channel) {
+        return new Config(null, null, null, prop(channel), prop(channelType), null, null, null, null);
     }
 
     private Property prop(String value) {

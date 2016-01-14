@@ -101,7 +101,7 @@ public class Config {
     public ChannelType getChannelType() {
         String value = getValueOr(channelType, null);
         if (value != null) {
-            return ChannelType.valueOf(value);
+            return ChannelType.valueOf(value.toUpperCase());
         } else {
             return null;
         }
