@@ -11,31 +11,31 @@ public class ConfigTest {
 
     @Test
     public void testCustomColor() {
-        assertThat(configWithColor("CUSTOM", "F00F00").getColor(), is("F00F00"));
+        assertThat(configWithColor("Custom", "F00F00").getColor(), is("F00F00"));
     }
 
     @Test
     public void testNoColor() {
-        assertThat(configWithColor("NONE", "F00F00").getColor(), nullValue());
-        assertThat(configWithColor("NONE", null).getColor(), nullValue());
+        assertThat(configWithColor("None", "F00F00").getColor(), nullValue());
+        assertThat(configWithColor("None", null).getColor(), nullValue());
     }
 
     @Test
     public void testGoodColor() {
-        assertThat(configWithColor("GOOD", "F00F00").getColor(), is("good"));
-        assertThat(configWithColor("GOOD", null).getColor(), is("good"));
+        assertThat(configWithColor("Good", "F00F00").getColor(), is("good"));
+        assertThat(configWithColor("Good", null).getColor(), is("good"));
     }
 
     @Test
     public void testWarningColor() {
-        assertThat(configWithColor("WARNING", "F00F00").getColor(), is("warning"));
-        assertThat(configWithColor("WARNING", null).getColor(), is("warning"));
+        assertThat(configWithColor("Warning", "F00F00").getColor(), is("warning"));
+        assertThat(configWithColor("Warning", null).getColor(), is("warning"));
     }
 
     @Test
     public void testDangerColor() {
-        assertThat(configWithColor("DANGER", "F00F00").getColor(), is("danger"));
-        assertThat(configWithColor("DANGER", null).getColor(), is("danger"));
+        assertThat(configWithColor("Danger", "F00F00").getColor(), is("danger"));
+        assertThat(configWithColor("Danger", null).getColor(), is("danger"));
     }
 
     private Config configWithColor(String colorType, String color) {

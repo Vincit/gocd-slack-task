@@ -73,7 +73,7 @@ public class Config {
     public ColorType getColorType() {
         String value = getValueOr(colorType, null);
         if (value != null) {
-            return ColorType.valueOf(value);
+            return ColorType.valueOf(value.toUpperCase());
         } else {
             return null;
         }
