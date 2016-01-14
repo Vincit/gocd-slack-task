@@ -68,6 +68,9 @@
     <label for="colorDanger">Danger</label>
     <input id="colorCustom" type="radio" ng-model="ColorType" value="Custom">
     <label for="colorCustom">Custom</label>
-    <input type="text" id="customColor" ng-model="Color">
   </div>
+</div>
+<div class="form_item_block">
+  <label>Custom Color:</label>
+  <input type="text" id="customColor" ng-model="Color" ng-disabled="ColorType != 'Custom'">
 </div>
