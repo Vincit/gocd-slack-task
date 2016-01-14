@@ -7,6 +7,15 @@
   </span>
 </div>
 <div class="form_item_block">
+  <label>Channel type:</label>
+  <div class="checkbox_row">
+    <input id="channelTypeChannel" type="radio" ng-model="ChannelType" value="CHANNEL">
+    <label for="channelTypeChannel">Channel</label>
+    <input id="channelTypeUser" type="radio" ng-model="ChannelType" value="USER">
+    <label for="channelTypeUser">User</label>
+  </div>
+</div>
+<div class="form_item_block">
   <label>Title:</label>
   <input type="text" ng-model="Title" ng-required="false">
   </input>

@@ -12,6 +12,8 @@ public class Config {
     private Property iconOrEmoji;
     @SerializedName("Channel")
     private Property channel;
+    @SerializedName("ChannelType")
+    private Property channelType;
 
     public Config() {
     }
@@ -38,5 +40,14 @@ public class Config {
 
     public String getChannel() {
         return getValueOr(channel, null);
+    }
+
+    public ChannelType getChannelType() {
+        String value = getValueOr(channelType, null);
+        if (value != null) {
+            return ChannelType.valueOf(value);
+        } else {
+            return null;
+        }
     }
 }

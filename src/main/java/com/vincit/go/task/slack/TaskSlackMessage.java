@@ -1,12 +1,12 @@
 package com.vincit.go.task.slack;
 
-public class SlackMessage {
+public class TaskSlackMessage {
 
     private final String title;
     private final String message;
     private final String iconOrEmoji;
 
-    public SlackMessage(String title, String message, String iconOrEmoji) {
+    public TaskSlackMessage(String title, String message, String iconOrEmoji) {
         this.title = title;
         this.message = message;
         this.iconOrEmoji = iconOrEmoji;

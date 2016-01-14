@@ -1,44 +1,21 @@
 package com.vincit.go.task.slack;
 
 import com.thoughtworks.go.plugin.api.GoPluginIdentifier;
+import com.thoughtworks.go.plugin.api.request.DefaultGoApiRequest;
 import com.thoughtworks.go.plugin.api.request.GoApiRequest;
-
-import java.util.Map;
 
 public class GoRequestFactory {
 
-    public static GoApiRequest createGoApiRequest(final String api, final String responseBody) {
-        return new GoApiRequest() {
-            @Override
-            public String api() {
-                return api;
-            }
+    GoPluginIdentifier pluginIdentifier;
 
-            @Override
-            public String apiVersion() {
-                return "1.0";
-            }
+    public GoRequestFactory(GoPluginIdentifier pluginIdentifier) {
+        this.pluginIdentifier = pluginIdentifier;
+    }
 
-            @Override
-            public GoPluginIdentifier pluginIdentifier() {
-                return pluginIdentifier();
-            }
-
-            @Override
-            public Map<String, String> requestParameters() {
-                return null;
-            }
-
-            @Override
-            public Map<String, String> requestHeaders() {
-                return null;
-            }
-
-            @Override
-            public String requestBody() {
-                return responseBody;
-            }
-        };
+    public GoApiRequest createGoApiRequest(final String api, final String responseBody) {
+        DefaultGoApiRequest apiRequest = new DefaultGoApiRequest(api, "1.0", pluginIdentifier);
+        apiRequest.setRequestBody(responseBody);
+        return apiRequest;
     }
 
 }

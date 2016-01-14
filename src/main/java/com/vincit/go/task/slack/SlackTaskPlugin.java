@@ -42,6 +42,7 @@ import static com.vincit.go.task.slack.utils.MessageUtil.replaceWithEnvVars;
 public class SlackTaskPlugin implements GoPlugin {
 
     public static final String CHANNEL = "Channel";
+    public static final String CHANNEL_TYPE = "ChannelType";
     public static final String MESSAGE = "Message";
     public static final String TITLE = "Title";
     public static final String ICON_OR_EMOJI = "IconOrEmoji";
@@ -65,7 +66,7 @@ public class SlackTaskPlugin implements GoPlugin {
 
     @Override
     public GoPluginApiResponse handle(GoPluginApiRequest request) throws UnhandledRequestTypeException {
-        logger.info("Handle: " + request.requestName());
+        logger.info("Handle received message of type: " + request.requestName());
 
         if ("configuration".equals(request.requestName())) {
             return handleGetConfigRequest();
@@ -98,7 +99,10 @@ public class SlackTaskPlugin implements GoPlugin {
     private SlackConfig getSlackConfigFromGo() {
         Map<String, Object> requestMap = new HashMap<String, Object>();
         requestMap.put("plugin-id", PLUGIN_ID);
-        GoApiResponse response = goApplicationAccessor.submit(com.vincit.go.task.slack.GoRequestFactory.createGoApiRequest(GET_PLUGIN_SETTINGS, JSONUtils.toJSON(requestMap)));
+        GoRequestFactory r = new GoRequestFactory(pluginIdentifier());
+        GoApiResponse response = goApplicationAccessor.submit(
+                r.createGoApiRequest(GET_PLUGIN_SETTINGS, JSONUtils.toJSON(requestMap))
+        );
 
         Map<String, String> responseMap = response.responseBody() == null ?
                 new HashMap<String, String>() :
@@ -144,22 +148,29 @@ public class SlackTaskPlugin implements GoPlugin {
 
         SlackConfig slackConfig = getSlackConfigFromGo();
 
-        String webhookUrl = slackConfig.getWebhookUrl();
-        com.vincit.go.task.slack.SlackExecutor executor = new com.vincit.go.task.slack.SlackExecutor(webhookUrl);
+        try {
+            String webhookUrl = slackConfig.getWebhookUrl();
+            SlackExecutor executor = new SlackExecutor(webhookUrl);
 
-        String messageStr = replaceWithEnvVars(
-                config.getMessage(),
-                context.getEnvironmentVariables()
-        );
+            String messageStr = replaceWithEnvVars(
+                    config.getMessage(),
+                    context.getEnvironmentVariables()
+            );
 
-        SlackMessage message = new SlackMessage(
-                config.getTitle(),
-                messageStr,
-                config.getIconOrEmoji()
-        );
-        executor.sendMessage(config.getChannel(), message);
+            TaskSlackMessage message = new TaskSlackMessage(
+                    config.getTitle(),
+                    messageStr,
+                    config.getIconOrEmoji()
+            );
 
-        return responseAsJson(SUCCESS_RESPONSE_CODE, new HashMap());
+            executor.sendMessage(config.getChannelType(), config.getChannel(), message);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not send message to slack", e);
+        }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        return responseAsJson(SUCCESS_RESPONSE_CODE, result);
     }
 
     private GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
@@ -171,9 +182,10 @@ public class SlackTaskPlugin implements GoPlugin {
     private GoPluginApiResponse handleGetConfigRequest() {
         HashMap config = new HashMap();
         config.put(CHANNEL, createField("Channel", 0, true));
-        config.put(TITLE, createField("Title", 1, false));
-        config.put(ICON_OR_EMOJI, createField("Icon or Emoji", 2, false));
-        config.put(MESSAGE, createField("Message", 3, false));
+        config.put(CHANNEL_TYPE, createField("Channel Type", 1, true));
+        config.put(TITLE, createField("Title", 2, false));
+        config.put(ICON_OR_EMOJI, createField("Icon or Emoji", 3, false));
+        config.put(MESSAGE, createField("Message", 4, false));
         return responseAsJson(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
     }
 

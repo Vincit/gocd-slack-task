@@ -12,4 +12,11 @@ public class SlackConfig {
         return webhookUrl;
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SlackConfig{");
+        sb.append("webhookUrl='").append(webhookUrl).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }
