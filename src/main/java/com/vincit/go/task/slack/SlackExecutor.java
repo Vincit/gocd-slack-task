@@ -16,10 +16,12 @@ public class SlackExecutor {
 
     public void sendMessage(ChannelType channelType, String channel, TaskSlackMessage message) throws IOException {
         SlackAttachment attachment = new SlackAttachment(message.getMessage())
+                .color(message.getColor())
                 .title(message.getTitle());
 
         updateChannel(channelType, channel);
 
+        slack.displayName(message.getDisplayName());
         slack.icon(message.getIconOrEmoji());
 
         slack.push(attachment);

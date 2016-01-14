@@ -51,6 +51,9 @@ public class SlackTaskPlugin implements GoPlugin {
     public static final String ICON_OR_EMOJI = "IconOrEmoji";
     public static final String EXTENSION_ID = "task";
     public static final String WEBHOOK_URL = "WebhookUrl";
+    public static final String DISPLAY_NAME = "DisplayName";
+    public static final String COLOR = "Color";
+    public static final String COLOR_TYPE = "ColorType";
 
     public static final int SUCCESS_RESPONSE_CODE = 200;
     public static final int ERROR_RESPONSE_CODE = 500;
@@ -111,7 +114,9 @@ public class SlackTaskPlugin implements GoPlugin {
             TaskSlackMessage message = new TaskSlackMessage(
                     config.getTitle(),
                     messageStr,
-                    config.getIconOrEmoji()
+                    config.getIconOrEmoji(),
+                    config.getColor(),
+                    config.getDisplayName()
             );
 
             executor.sendMessage(config.getChannelType(), config.getChannel(), message);
@@ -138,6 +143,9 @@ public class SlackTaskPlugin implements GoPlugin {
         config.put(TITLE, createField("Title", 3, false));
         config.put(ICON_OR_EMOJI, createField("Icon or Emoji", 4, false));
         config.put(MESSAGE, createField("Message", 5, false));
+        config.put(DISPLAY_NAME, createField("Display Name", 6, false));
+        config.put(COLOR_TYPE, createField("Color Type", 7, false));
+        config.put(COLOR, createField("Color", 8, false));
         return responseAsJson(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
     }
 

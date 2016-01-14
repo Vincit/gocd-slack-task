@@ -47,3 +47,27 @@
     {{ GOINPUTNAME[Message].$error.server }}
   </span>
 </div>
+<div class="form_item_block">
+  <label>Display Name:</label>
+  <input type="text" ng-model="DisplayName" ng-required="false">
+  </input>
+  <span class="form_error" ng-show="GOINPUTNAME[DisplayName].$error.server">
+    {{ GOINPUTNAME[DisplayName].$error.server }}
+  </span>
+</div>
+<div class="form_item_block">
+  <label>Color:</label>
+  <div class="checkbox_row">
+    <input id="colorNone" type="radio" ng-model="ColorType" value="NONE">
+    <label for="colorNone">None</label>
+    <input id="colorGood" type="radio" ng-model="ColorType" value="GOOD">
+    <label for="colorGood">Good</label>
+    <input id="colorWarning" type="radio" ng-model="ColorType" value="WARNING">
+    <label for="colorWarning">Warning</label>
+    <input id="colorDanger" type="radio" ng-model="ColorType" value="DANGER">
+    <label for="colorDanger">Danger</label>
+    <input id="colorCustom" type="radio" ng-model="ColorType" value="CUSTOM">
+    <label for="colorCustom">Custom</label>
+    <input type="text" id="customColor" ng-model="Color">
+  </div>
+</div>

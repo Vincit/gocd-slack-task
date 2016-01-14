@@ -17,7 +17,11 @@ public class Property {
 
     public String getValueOr(String other) {
         if (value != null) {
-            return value;
+            if (value.isEmpty()) {
+                return other;
+            } else {
+                return value;
+            }
         } else {
             return other;
         }

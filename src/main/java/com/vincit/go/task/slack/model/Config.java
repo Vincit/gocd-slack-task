@@ -16,6 +16,12 @@ public class Config {
     private Property channelType;
     @SerializedName("WebhookUrl")
     private Property webhookUrl;
+    @SerializedName("DisplayName")
+    private Property displayName;
+    @SerializedName("ColorType")
+    private Property colorType;
+    @SerializedName("Color")
+    private Property color;
 
     public Config() {
     }
@@ -46,6 +52,38 @@ public class Config {
 
     public String getWebhookUrl() {
         return getValueOr(webhookUrl, null);
+    }
+
+    public String getDisplayName() {
+        return getValueOr(displayName, null);
+    }
+
+    public ColorType getColorType() {
+        String value = getValueOr(colorType, null);
+        if (value != null) {
+            return ColorType.valueOf(value);
+        } else {
+            return null;
+        }
+    }
+
+    public String getCustomColor() {
+        return getValueOr(color, null);
+    }
+
+    public String getColor() {
+        ColorType colorType = getColorType();
+        switch (colorType) {
+            case NONE: return null;
+            case GOOD:
+            case WARNING:
+            case DANGER:
+                return colorType.name().toLowerCase();
+            case CUSTOM:
+                return getCustomColor();
+            default:
+                throw new IllegalArgumentException("Invalid color mode");
+        }
     }
 
     public ChannelType getChannelType() {

@@ -5,11 +5,15 @@ public class TaskSlackMessage {
     private final String title;
     private final String message;
     private final String iconOrEmoji;
+    private final String color;
+    private final String displayName;
 
-    public TaskSlackMessage(String title, String message, String iconOrEmoji) {
+    public TaskSlackMessage(String title, String message, String iconOrEmoji, String color, String displayName) {
         this.title = title;
         this.message = message;
         this.iconOrEmoji = iconOrEmoji;
+        this.color = color;
+        this.displayName = displayName;
     }
 
     public String getTitle() {
@@ -22,5 +26,13 @@ public class TaskSlackMessage {
 
     public String getIconOrEmoji() {
         return iconOrEmoji;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 }
