@@ -15,24 +15,31 @@ public class TaskConfigParserTest {
         TaskConfig config = TaskConfigParser.fromJson("{\n" +
                 "    \"config\": {\n" +
                 "        \"Message\": {\n" +
-                "            \"secure\": false,\n" +
-                "            \"value\": \"Test message\",\n" +
-                "            \"required\": true\n" +
+                "            \"value\": \"Test message\"\n" +
                 "        },\n" +
                 "        \"Title\": {\n" +
-                "            \"secure\": false,\n" +
-                "            \"value\": \"Test title\",\n" +
-                "            \"required\": false\n" +
-                "        },\n" +
-                "        \"Channel\": {\n" +
-                "            \"secure\": false,\n" +
-                "            \"value\": \"#channel\",\n" +
-                "            \"required\": false\n" +
+                "            \"value\": \"Test title\"\n" +
                 "        },\n" +
                 "        \"IconOrEmoji\": {\n" +
-                "            \"secure\": false,\n" +
-                "            \"value\": \":test_icon:\",\n" +
-                "            \"required\": true\n" +
+                "            \"value\": \":tada:\"\n" +
+                "        },\n" +
+                "        \"Channel\": {\n" +
+                "            \"value\": \"test-channel\"\n" +
+                "        },\n" +
+                "        \"ChannelType\": {\n" +
+                "            \"value\": \"CHANNEL\"\n" +
+                "        },\n" +
+                "        \"WebhookUrl\": {\n" +
+                "            \"value\": \"http://example.org\"\n" +
+                "        },\n" +
+                "        \"DisplayName\": {\n" +
+                "            \"value\": \"Display Name\"\n" +
+                "        },\n" +
+                "        \"ColorType\": {\n" +
+                "            \"value\": \"CUSTOM\"\n" +
+                "        },\n" +
+                "        \"Color\": {\n" +
+                "            \"value\": \"F00F00\"\n" +
                 "        }\n" +
                 "    },\n" +
                 "    \"context\": {\n" +
@@ -49,8 +56,12 @@ public class TaskConfigParserTest {
         assertThat(config.getConfig(), notNullValue());
         assertThat(config.getConfig().getMessage(), is("Test message"));
         assertThat(config.getConfig().getTitle(), is("Test title"));
-        assertThat(config.getConfig().getChannel(), is("#channel"));
-        assertThat(config.getConfig().getIconOrEmoji(), is(":test_icon:"));
+        assertThat(config.getConfig().getChannel(), is("test-channel"));
+        assertThat(config.getConfig().getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(config.getConfig().getIconOrEmoji(), is(":tada:"));
+        assertThat(config.getConfig().getDisplayName(), is("Display Name"));
+        assertThat(config.getConfig().getColorType(), is(ColorType.CUSTOM));
+        assertThat(config.getConfig().getColor(), is("F00F00"));
 
         assertThat(config.getContext(), notNullValue());
         assertThat(config.getContext().getEnvironmentVariables(), notNullValue());
@@ -64,9 +75,7 @@ public class TaskConfigParserTest {
         TaskConfig config = TaskConfigParser.fromJson("{\n" +
                 "    \"config\": {\n" +
                 "        \"Message\": {\n" +
-                "            \"secure\": false,\n" +
-                "            \"value\": \"Test message\",\n" +
-                "            \"required\": true\n" +
+                "            \"value\": \"Test message\"\n" +
                 "        },\n" +
                 "        \"Title\": {\n" +
                 "            \"secure\": false,\n" +
@@ -94,6 +103,5 @@ public class TaskConfigParserTest {
         assertThat(config.getContext(), notNullValue());
         assertThat(config.getContext().getEnvironmentVariables(), notNullValue());
         assertThat(config.getContext().getEnvironmentVariables().get("ENV1"), is("VAL1"));
-        assertThat(config.getContext().getEnvironmentVariables().get("ENV3"), nullValue());
     }
 }
