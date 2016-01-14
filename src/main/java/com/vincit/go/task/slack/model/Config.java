@@ -14,6 +14,8 @@ public class Config {
     private Property channel;
     @SerializedName("ChannelType")
     private Property channelType;
+    @SerializedName("WebhookUrl")
+    private Property webhookUrl;
 
     public Config() {
     }
@@ -40,6 +42,10 @@ public class Config {
 
     public String getChannel() {
         return getValueOr(channel, null);
+    }
+
+    public String getWebhookUrl() {
+        return getValueOr(webhookUrl, null);
     }
 
     public ChannelType getChannelType() {
