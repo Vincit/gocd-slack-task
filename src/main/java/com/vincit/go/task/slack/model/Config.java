@@ -26,6 +26,18 @@ public class Config {
     public Config() {
     }
 
+    public Config(Property message, Property title, Property iconOrEmoji, Property channel, Property channelType, Property webhookUrl, Property displayName, Property colorType, Property color) {
+        this.message = message;
+        this.title = title;
+        this.iconOrEmoji = iconOrEmoji;
+        this.channel = channel;
+        this.channelType = channelType;
+        this.webhookUrl = webhookUrl;
+        this.displayName = displayName;
+        this.colorType = colorType;
+        this.color = color;
+    }
+
     private String getValueOr(Property property, String value) {
         if (property != null) {
             return property.getValueOr(value);
