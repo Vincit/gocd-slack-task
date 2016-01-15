@@ -51,7 +51,7 @@ public class Config {
     }
 
     public String getTitle() {
-        return getValueOr(title, null);
+        return getValueOr(title, "");
     }
 
     public String getIconOrEmoji() {
@@ -67,7 +67,7 @@ public class Config {
     }
 
     public String getDisplayName() {
-        return getValueOr(displayName, null);
+        return getValueOr(displayName, "");
     }
 
     public ColorType getColorType() {

@@ -30,6 +30,7 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.vincit.go.task.slack.model.Config;
 import com.vincit.go.task.slack.model.Context;
 import com.vincit.go.task.slack.model.TaskConfig;
+import com.vincit.go.task.slack.utils.MessageFormatter;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -39,7 +40,6 @@ import java.util.Map;
 import static com.vincit.go.task.slack.utils.FieldUtils.createField;
 import static com.vincit.go.task.slack.utils.FileUtils.getFileContents;
 import static com.vincit.go.task.slack.utils.JSONUtils.responseAsJson;
-import static com.vincit.go.task.slack.utils.MessageUtil.replaceWithEnvVars;
 
 @Extension
 public class SlackTaskPlugin implements GoPlugin {
@@ -105,18 +105,14 @@ public class SlackTaskPlugin implements GoPlugin {
         try {
             String webhookUrl = config.getWebhookUrl();
             SlackExecutor executor = new SlackExecutor(webhookUrl);
-
-            String messageStr = replaceWithEnvVars(
-                    config.getMessage(),
-                    context.getEnvironmentVariables()
-            );
+            MessageFormatter messageFormatter = new MessageFormatter(context.getEnvironmentVariables());
 
             TaskSlackMessage message = new TaskSlackMessage(
-                    config.getTitle(),
-                    messageStr,
+                    messageFormatter.format(config.getTitle()),
+                    messageFormatter.format(config.getMessage()),
                     config.getIconOrEmoji(),
                     config.getColor(),
-                    config.getDisplayName()
+                    messageFormatter.format(config.getDisplayName())
             );
 
             executor.sendMessage(config.getChannelType(), config.getChannel(), message);

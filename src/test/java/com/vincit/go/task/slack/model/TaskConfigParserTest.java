@@ -96,7 +96,7 @@ public class TaskConfigParserTest {
 
         assertThat(config.getConfig(), notNullValue());
         assertThat(config.getConfig().getMessage(), is("Test message"));
-        assertThat(config.getConfig().getTitle(), nullValue());
+        assertThat(config.getConfig().getTitle(), is(""));
         assertThat(config.getConfig().getChannel(), nullValue());
         assertThat(config.getConfig().getIconOrEmoji(), nullValue());
 

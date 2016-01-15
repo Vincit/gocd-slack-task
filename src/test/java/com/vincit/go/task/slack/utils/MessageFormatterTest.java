@@ -7,14 +7,22 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 
-public class MessageUtilTest {
+public class MessageFormatterTest {
 
     @Test
     public void testReplace() {
         Map<String, String> envVars = new HashMap<>();
         envVars.put("WHAT", "World");
-        assertThat(MessageUtil.replaceWithEnvVars("Hello $WHAT", envVars), is("Hello World"));
+        assertThat(new MessageFormatter(envVars).format("Hello $WHAT"), is("Hello World"));
+    }
+
+    @Test
+    public void testReplaceNull() {
+        Map<String, String> envVars = new HashMap<>();
+        envVars.put("WHAT", "World");
+        assertThat(new MessageFormatter(envVars).format(null), nullValue());
     }
 
     @Test
@@ -23,7 +31,7 @@ public class MessageUtilTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(MessageUtil.replaceWithEnvVars("$VAR_1 $VAR_2 $VAR_3", envVars), is("Jee Joo Jaa"));
+        assertThat(new MessageFormatter(envVars).format("$VAR_1 $VAR_2 $VAR_3"), is("Jee Joo Jaa"));
     }
 
     @Test
@@ -32,7 +40,7 @@ public class MessageUtilTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(MessageUtil.replaceWithEnvVars("$VAR_1 $$VAR_2 $VAR_3", envVars), is("Jee $Joo Jaa"));
+        assertThat(new MessageFormatter(envVars).format("$VAR_1 $$VAR_2 $VAR_3"), is("Jee $Joo Jaa"));
     }
 
     @Test
@@ -41,7 +49,7 @@ public class MessageUtilTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(MessageUtil.replaceWithEnvVars("$VAR_1 VAR_2 $VAR_3", envVars), is("Jee VAR_2 Jaa"));
+        assertThat(new MessageFormatter(envVars).format("$VAR_1 VAR_2 $VAR_3"), is("Jee VAR_2 Jaa"));
     }
 
     @Test
@@ -50,7 +58,7 @@ public class MessageUtilTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(MessageUtil.replaceWithEnvVars("$VAR_1 \\$VAR_2 $VAR_3", envVars), is("Jee $VAR_2 Jaa"));
+        assertThat(new MessageFormatter(envVars).format("$VAR_1 \\$VAR_2 $VAR_3"), is("Jee $VAR_2 Jaa"));
     }
 
 }
