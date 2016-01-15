@@ -85,6 +85,10 @@ public class Config {
 
     public String getColor() {
         ColorType colorType = getColorType();
+        if (colorType == null) {
+            return null;
+        }
+        
         switch (colorType) {
             case NONE: return null;
             case GOOD:

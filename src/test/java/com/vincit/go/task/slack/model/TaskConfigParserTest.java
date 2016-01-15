@@ -97,8 +97,12 @@ public class TaskConfigParserTest {
         assertThat(config.getConfig(), notNullValue());
         assertThat(config.getConfig().getMessage(), is("Test message"));
         assertThat(config.getConfig().getTitle(), is(""));
+        assertThat(config.getConfig().getDisplayName(), is(""));
         assertThat(config.getConfig().getChannel(), nullValue());
         assertThat(config.getConfig().getIconOrEmoji(), nullValue());
+        assertThat(config.getConfig().getCustomColor(), nullValue());
+        assertThat(config.getConfig().getColorType(), nullValue());
+        assertThat(config.getConfig().getWebhookUrl(), nullValue());
 
         assertThat(config.getContext(), notNullValue());
         assertThat(config.getContext().getEnvironmentVariables(), notNullValue());
