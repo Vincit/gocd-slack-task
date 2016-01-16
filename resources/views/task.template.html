@@ -1,17 +1,17 @@
 <div class="form_item_block">
-  <label>Webhook URL:<span class="asterisk">*</span></label>
-  <input type="text" ng-model="WebhookUrl" ng-required="true">
+  <label for="WebhookUrl">Webhook URL:<span class="asterisk">*</span></label>
+  <input type="text" id="WebhookUrl" ng-model="WebhookUrl" ng-required="true">
   </input>
   <span class="form_error" ng-show="GOINPUTNAME[WebhookUrl].$error.server">
     {{ GOINPUTNAME[WebhookUrl].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label>Channel:</label>
+  <label for="Channel">Channel:</label>
   <div class="path_textbox">
     <label ng-show="ChannelType == 'Channel'">#</label>
     <label ng-show="ChannelType == 'User'">@</label>
-    <input type="text" ng-model="Channel" ng-required="false">
+    <input type="text" id="Channel" ng-model="Channel" ng-required="false">
     <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
       {{ GOINPUTNAME[Channel].$error.server }}
     </span>
@@ -30,32 +30,32 @@
   </span>
 </div>
 <div class="form_item_block">
-  <label>Display Name:</label>
-  <input type="text" ng-model="DisplayName" ng-required="false">
+  <label for="DisplayName">Display Name:</label>
+  <input type="text" id="DisplayName" ng-model="DisplayName" ng-required="false">
   </input>
   <span class="form_error" ng-show="GOINPUTNAME[DisplayName].$error.server">
     {{ GOINPUTNAME[DisplayName].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label>Title:</label>
-  <input type="text" ng-model="Title" ng-required="false">
+  <label for="Title">Title:</label>
+  <input type="text" id="Title" ng-model="Title" ng-required="false">
   </input>
   <span class="form_error" ng-show="GOINPUTNAME[Title].$error.server">
     {{ GOINPUTNAME[Title].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label>Message:</label>
-  <textarea cols="50" rows="5" ng-model="Message" ng-required="false">
+  <label for="Message">Message:</label>
+  <textarea id="Message" cols="50" rows="5" ng-model="Message" ng-required="false">
   </textarea>
   <span class="form_error" ng-show="GOINPUTNAME[Message].$error.server">
     {{ GOINPUTNAME[Message].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label>Icon or Emoji:</label>
-  <input type="text" ng-model="IconOrEmoji" ng-required="false">
+  <label for="IconOrEmoji">Icon or Emoji:</label>
+  <input type="text" id="IconOrEmoji" ng-model="IconOrEmoji" ng-required="false">
   </input>
   <span class="form_error" ng-show="GOINPUTNAME[IconOrEmoji].$error.server">
     {{ GOINPUTNAME[IconOrEmoji].$error.server }}
