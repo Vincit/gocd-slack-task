@@ -16,7 +16,6 @@
 
 package com.vincit.go.task.slack;
 
-import com.google.gson.GsonBuilder;
 import com.thoughtworks.go.plugin.api.annotation.Extension;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
@@ -26,6 +25,7 @@ import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.vincit.go.task.slack.executor.SlackExecutor;
 import com.vincit.go.task.slack.executor.TaskSlackMessage;
 import com.vincit.go.task.slack.model.*;
+import com.vincit.go.task.slack.utils.JSONUtils;
 import com.vincit.go.task.slack.utils.MessageFormatter;
 
 import java.io.IOException;
@@ -74,7 +74,7 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
     @Override
     protected GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) {
 
-        TaskConfig executionRequest = new GsonBuilder().create().fromJson(request.requestBody(), TaskConfig.class);
+        TaskConfig executionRequest = JSONUtils.fromJSON(request.requestBody(), TaskConfig.class);
         Config config = executionRequest.getConfig();
         Context context = executionRequest.getContext();
 
