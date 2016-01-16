@@ -12,6 +12,11 @@ import java.util.List;
 
 public abstract class AbstractTaskPlugin implements GoPlugin {
 
+    protected static final String CONFIGURATION = "configuration";
+    protected static final String VALIDATE = "validate";
+    protected static final String EXECUTE = "execute";
+    protected static final String VIEW = "view";
+
     private final String extensionId;
     private final List<String> supportedVersions;
 
@@ -31,32 +36,32 @@ public abstract class AbstractTaskPlugin implements GoPlugin {
 
     @Override
     public GoPluginApiResponse handle(GoPluginApiRequest request) throws UnhandledRequestTypeException {
-        if ("configuration".equals(request.requestName())) {
+        if (CONFIGURATION.equals(request.requestName())) {
             return handleGetConfigRequest(request);
-        } else if ("validate".equals(request.requestName())) {
+        } else if (VALIDATE.equals(request.requestName())) {
             return handleValidation(request);
-        } else if ("execute".equals(request.requestName())) {
+        } else if (EXECUTE.equals(request.requestName())) {
             return handleTaskExecution(request);
-        } else if ("view".equals(request.requestName())) {
+        } else if (VIEW.equals(request.requestName())) {
             return handleTaskView(request);
         }
         throw new UnhandledRequestTypeException(request.requestName());
     }
 
     protected GoPluginApiResponse handleTaskView(GoPluginApiRequest request) throws UnhandledRequestTypeException {
-        throw new UnhandledRequestTypeException("view");
+        throw new UnhandledRequestTypeException(VIEW);
     }
 
     protected GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) throws UnhandledRequestTypeException {
-        throw new UnhandledRequestTypeException("execute");
+        throw new UnhandledRequestTypeException(EXECUTE);
     }
 
     protected GoPluginApiResponse handleValidation(GoPluginApiRequest request) throws UnhandledRequestTypeException {
-        throw new UnhandledRequestTypeException("validate");
+        throw new UnhandledRequestTypeException(VALIDATE);
     }
 
     protected GoPluginApiResponse handleGetConfigRequest(GoPluginApiRequest request) throws UnhandledRequestTypeException {
-        throw new UnhandledRequestTypeException("configuration");
+        throw new UnhandledRequestTypeException(CONFIGURATION);
     }
 
 }
