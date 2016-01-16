@@ -8,11 +8,14 @@
 </div>
 <div class="form_item_block">
   <label>Channel:</label>
-  <input type="text" ng-model="Channel" ng-required="false">
-  </input>
-  <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
-    {{ GOINPUTNAME[Channel].$error.server }}
-  </span>
+  <div class="path_textbox">
+    <label ng-show="ChannelType == 'Channel'">#</label>
+    <label ng-show="ChannelType == 'User'">@</label>
+    <input type="text" ng-model="Channel" ng-required="false">
+    <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
+      {{ GOINPUTNAME[Channel].$error.server }}
+    </span>
+  </div>
 </div>
 <div class="form_item_block">
   <label>Channel type:</label>
@@ -78,8 +81,10 @@
 </div>
 <div class="form_item_block">
   <label for="Color">Custom Color:</label>
-  <input type="text" id="Color" ng-model="Color" ng-disabled="ColorType != 'Custom'">
-  <span class="form_error" ng-show="GOINPUTNAME[Color].$error.server">
-    {{ GOINPUTNAME[Color].$error.server }}
-  </span>
+  <div class="path_textbox">
+    <label for="Color">#</label><input type="text" id="Color" ng-model="Color" ng-disabled="ColorType != 'Custom'">
+    <span class="form_error" ng-show="GOINPUTNAME[Color].$error.server">
+      {{ GOINPUTNAME[Color].$error.server }}
+    </span>
+  </div>
 </div>
