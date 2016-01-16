@@ -73,7 +73,6 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
 
     @Override
     protected GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) {
-        logger.info("handleTaskExecution");
 
         TaskConfig executionRequest = new GsonBuilder().create().fromJson(request.requestBody(), TaskConfig.class);
         Config config = executionRequest.getConfig();
