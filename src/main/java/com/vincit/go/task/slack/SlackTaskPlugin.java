@@ -53,9 +53,6 @@ public class SlackTaskPlugin implements GoPlugin {
     public static final String COLOR = "Color";
     public static final String COLOR_TYPE = "ColorType";
 
-    public static final int SUCCESS_RESPONSE_CODE = 200;
-    public static final int ERROR_RESPONSE_CODE = 500;
-
     private Logger logger = Logger.getLoggerFor(SlackTaskPlugin.class);
 
     @Override
@@ -120,7 +117,7 @@ public class SlackTaskPlugin implements GoPlugin {
 
         Map<String, Object> result = new HashMap<>();
         result.put("success", true);
-        return responseAsJson(SUCCESS_RESPONSE_CODE, result);
+        return responseAsJson(DefaultGoApiResponse.SUCCESS_RESPONSE_CODE, result);
     }
 
     private GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
