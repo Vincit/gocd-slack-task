@@ -1,4 +1,4 @@
-package com.vincit.go.task.slack;
+package com.vincit.go.task.slack.executor;
 
 import com.vincit.go.task.slack.model.ChannelType;
 import in.ashwanthkumar.slack.webhook.Slack;

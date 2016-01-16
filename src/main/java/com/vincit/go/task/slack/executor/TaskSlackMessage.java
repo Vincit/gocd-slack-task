@@ -1,4 +1,4 @@
-package com.vincit.go.task.slack;
+package com.vincit.go.task.slack.executor;
 
 public class TaskSlackMessage {
 

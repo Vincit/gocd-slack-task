@@ -23,6 +23,8 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import com.vincit.go.task.slack.executor.SlackExecutor;
+import com.vincit.go.task.slack.executor.TaskSlackMessage;
 import com.vincit.go.task.slack.model.*;
 import com.vincit.go.task.slack.utils.MessageFormatter;
 
