@@ -22,6 +22,9 @@
     <input id="channelTypeUser" type="radio" ng-model="ChannelType" value="User">
     <label for="channelTypeUser">User</label>
   </div>
+  <span class="form_error" ng-show="GOINPUTNAME[ChannelType].$error.server">
+    {{ GOINPUTNAME[ChannelType].$error.server }}
+  </span>
 </div>
 <div class="form_item_block">
   <label>Display Name:</label>
@@ -69,8 +72,14 @@
     <input id="colorCustom" type="radio" ng-model="ColorType" value="Custom">
     <label for="colorCustom">Custom</label>
   </div>
+  <span class="form_error" ng-show="GOINPUTNAME[ColorType].$error.server">
+    {{ GOINPUTNAME[ColorType].$error.server }}
+  </span>
 </div>
 <div class="form_item_block">
-  <label>Custom Color:</label>
-  <input type="text" id="customColor" ng-model="Color" ng-disabled="ColorType != 'Custom'">
+  <label for="Color">Custom Color:</label>
+  <input type="text" id="Color" ng-model="Color" ng-disabled="ColorType != 'Custom'">
+  <span class="form_error" ng-show="GOINPUTNAME[Color].$error.server">
+    {{ GOINPUTNAME[Color].$error.server }}
+  </span>
 </div>

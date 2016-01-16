@@ -1,6 +1,10 @@
 package com.vincit.go.task.slack.model;
 
 import com.google.gson.annotations.SerializedName;
+import com.vincit.go.task.slack.SlackTaskPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
 
@@ -110,4 +114,34 @@ public class Config {
             return null;
         }
     }
+
+    public Map<String, String> validate() {
+        Map<String, String> errors = new HashMap<>();
+
+        message.validate(SlackTaskPlugin.MESSAGE, "Message is required", errors);
+        title.validate(SlackTaskPlugin.TITLE, "Title is required", errors);
+        iconOrEmoji.validate(SlackTaskPlugin.ICON_OR_EMOJI, "Icon or emoji is required", errors);
+        channel.validate(SlackTaskPlugin.CHANNEL, "Channel is required", errors);
+        channelType.validate(SlackTaskPlugin.CHANNEL_TYPE, "Channel type is required", errors);
+        webhookUrl.validate(SlackTaskPlugin.WEBHOOK_URL, "Webhook URL is required", errors);
+        displayName.validate(SlackTaskPlugin.DISPLAY_NAME, "Display name is required", errors);
+        colorType.validate(SlackTaskPlugin.COLOR_TYPE, "Color type is required", errors);
+        color.validate(SlackTaskPlugin.COLOR, "Color is required", errors);
+
+        if (color.isPresent()) {
+            if (!color.getValue().matches("[a-fA-F0-9]{6}")) {
+                errors.put(SlackTaskPlugin.COLOR, "Color must be given as six hexadecimals (without # prefix)");
+            }
+        }
+
+        if (colorType.isPresent() && colorType.getValue().equalsIgnoreCase(ColorType.CUSTOM.name())) {
+            if (!color.isPresent()) {
+                errors.put(SlackTaskPlugin.COLOR, "Color must be defined when using custom color");
+            }
+        }
+
+        return errors;
+    }
+
+
 }

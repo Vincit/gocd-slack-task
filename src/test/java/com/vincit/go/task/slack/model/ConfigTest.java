@@ -3,6 +3,9 @@ package com.vincit.go.task.slack.model;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -80,16 +83,54 @@ public class ConfigTest {
         assertThat(config.getChannel(), is("test.user"));
     }
 
+    @Test
+    public void validateColorFormat() {
+        Config config = configWithColor("Custom", "00ff00");
+        Map<String, String> errors = config.validate();
+
+        assertThat(errors.isEmpty(), is(true));
+    }
+
+    @Test
+    public void validateInvalidColorFormat() {
+        Config config = configWithColor("Custom", "qwerty");
+        Map<String, String> errors = config.validate();
+
+        Map<String, String> expected = new HashMap<>();
+        expected.put("Color", "Color must be given as six hexadecimals (without # prefix)");
+        assertThat(errors, is(expected));
+    }
+
+    @Test
+    public void validateInvalidColorFormat_Hash() {
+        Config config = configWithColor("Custom", "#00ff00");
+        Map<String, String> errors = config.validate();
+
+        Map<String, String> expected = new HashMap<>();
+        expected.put("Color", "Color must be given as six hexadecimals (without # prefix)");
+        assertThat(errors, is(expected));
+    }
+
+    @Test
+    public void validateCustomColor_Missing() {
+        Config config = configWithColor("Custom", "");
+        Map<String, String> errors = config.validate();
+
+        Map<String, String> expected = new HashMap<>();
+        expected.put("Color", "Color must be defined when using custom color");
+        assertThat(errors, is(expected));
+    }
+
     private Config configWithColor(String colorType, String color) {
-        return new Config(null, null, null, null, null, null, null, prop(colorType), prop(color));
+        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(colorType), prop(color));
     }
 
     private Config configWithChannel(String channelType, String channel) {
-        return new Config(null, null, null, prop(channel), prop(channelType), null, null, null, null);
+        return new Config(prop(null), prop(null), prop(null), prop(channel), prop(channelType), prop(null), prop(null), prop(null), prop(null));
     }
 
     private Property prop(String value) {
-        return new Property(value);
+        return new Property(value, false, false);
     }
 
 }

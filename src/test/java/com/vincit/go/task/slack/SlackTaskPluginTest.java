@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -75,8 +76,83 @@ public class SlackTaskPluginTest {
 
     }
 
+    @Test
+    public void testHandleValidation() throws Exception {
+        JsonUtil jsonUtil = mock(JsonUtil.class);
+        when(jsonUtil.fromJSON("test-request", Config.class)).thenReturn(
+                new Config(
+                        prop("message"),
+                        prop("title"),
+                        prop("icon"),
+                        prop("channel"),
+                        requiredProp("Channel"),
+                        requiredProp("webhook"),
+                        prop("display-name"),
+                        requiredProp("Custom"),
+                        prop("00ff00")
+                )
+        );
+
+        FileReader fileReader = mock(FileReader.class);
+        SlackExecutor slackExecutor = mock(SlackExecutor.class);
+
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slackExecutor);
+
+        DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "validate");
+        request.setRequestBody("test-request");
+        plugin.handle(request);
+
+        ArgumentCaptor<Object> objectCaptor = ArgumentCaptor.forClass(Object.class);
+        verify(jsonUtil).responseAsJson(eq(200), objectCaptor.capture());
+
+        Map<String, Map<String, String>> validationResult = (Map)objectCaptor.getValue();
+        Map<String, Map<String, String>> expected = new HashMap<>();
+        assertThat(validationResult, is(expected));
+    }
+
+    @Test
+    public void testHandleValidationRequiredErrors() throws Exception {
+        JsonUtil jsonUtil = mock(JsonUtil.class);
+        when(jsonUtil.fromJSON("test-request", Config.class)).thenReturn(
+                new Config(
+                        prop("message"),
+                        prop("title"),
+                        prop("icon"),
+                        prop("channel"),
+                        requiredProp(""),
+                        requiredProp(""),
+                        prop("display-name"),
+                        requiredProp(""),
+                        prop("")
+                )
+        );
+
+        FileReader fileReader = mock(FileReader.class);
+        SlackExecutor slackExecutor = mock(SlackExecutor.class);
+
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slackExecutor);
+
+        DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "validate");
+        request.setRequestBody("test-request");
+        plugin.handle(request);
+
+        ArgumentCaptor<Object> objectCaptor = ArgumentCaptor.forClass(Object.class);
+        verify(jsonUtil).responseAsJson(eq(200), objectCaptor.capture());
+
+        Map<String, Map<String, String>> validationResult = (Map)objectCaptor.getValue();
+        Map<String, String> expected = new HashMap<>();
+        expected.put(SlackTaskPlugin.CHANNEL_TYPE, "Channel type is required");
+        expected.put(SlackTaskPlugin.WEBHOOK_URL, "Webhook URL is required");
+        expected.put(SlackTaskPlugin.COLOR_TYPE, "Color type is required");
+        assertThat(validationResult.get("errors"), is(expected));
+    }
+
     private static Property prop(String value) {
-        return new Property(value);
+        return new Property(value, false, false);
+    }
+
+    private static Property requiredProp(String value) {
+        return new Property(value, false, true);
     }
 
 }

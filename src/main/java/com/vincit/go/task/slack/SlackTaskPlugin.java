@@ -121,8 +121,19 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
 
     @Override
     protected GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
-        HashMap validationResult = new HashMap();
-        int responseCode = DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE;
+        Config config = jsonUtil.fromJSON(request.requestBody(), Config.class);
+
+        Map<String, Map<String, String>> validationResult = new HashMap<>();
+        Map<String, String> errors = config.validate();
+
+        int responseCode;
+        if (!errors.isEmpty()) {
+            validationResult.put("errors", errors);
+            responseCode = DefaultGoApiResponse.SUCCESS_RESPONSE_CODE;
+        } else {
+            responseCode = DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE;
+        }
+
         return jsonUtil.responseAsJson(responseCode, validationResult);
     }
 
