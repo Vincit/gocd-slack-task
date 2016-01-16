@@ -30,7 +30,7 @@ public class Config {
     public Config() {
     }
 
-    public Config(Property message, Property title, Property iconOrEmoji, Property channel, Property channelType, Property webhookUrl, Property displayName, Property colorType, Property color) {
+    public Config(Property webhookUrl, Property channel, Property channelType, Property displayName, Property title, Property message, Property iconOrEmoji, Property colorType, Property color) {
         this.message = message;
         this.title = title;
         this.iconOrEmoji = iconOrEmoji;

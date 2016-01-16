@@ -126,7 +126,7 @@ public class ConfigTest {
     }
 
     private Config configWithChannel(String channelType, String channel) {
-        return new Config(prop(null), prop(null), prop(null), prop(channel), prop(channelType), prop(null), prop(null), prop(null), prop(null));
+        return new Config(prop(null), prop(channel), prop(channelType), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null));
     }
 
     private Property prop(String value) {

@@ -32,13 +32,8 @@ public class SlackTaskPluginTest {
         when(jsonUtil.fromJSON("test-request", TaskConfig.class)).thenReturn(
                 new TaskConfig(
                         new Config(
-                                prop("message"),
-                                prop("title"),
+                                prop("webhook"), prop("channel"), prop("CHANNEL"), prop("display-name"), prop("title"), prop("message"),
                                 prop("icon"),
-                                prop("channel"),
-                                prop("CHANNEL"),
-                                prop("webhook"),
-                                prop("display-name"),
                                 prop("CUSTOM"),
                                 prop("00ff00")
                         ),
@@ -81,13 +76,8 @@ public class SlackTaskPluginTest {
         JsonUtil jsonUtil = mock(JsonUtil.class);
         when(jsonUtil.fromJSON("test-request", Config.class)).thenReturn(
                 new Config(
-                        prop("message"),
-                        prop("title"),
+                        requiredProp("webhook"), prop("channel"), requiredProp("Channel"), prop("display-name"), prop("title"), prop("message"),
                         prop("icon"),
-                        prop("channel"),
-                        requiredProp("Channel"),
-                        requiredProp("webhook"),
-                        prop("display-name"),
                         requiredProp("Custom"),
                         prop("00ff00")
                 )
@@ -115,13 +105,8 @@ public class SlackTaskPluginTest {
         JsonUtil jsonUtil = mock(JsonUtil.class);
         when(jsonUtil.fromJSON("test-request", Config.class)).thenReturn(
                 new Config(
-                        prop("message"),
-                        prop("title"),
+                        requiredProp(""), prop("channel"), requiredProp(""), prop("display-name"), prop("title"), prop("message"),
                         prop("icon"),
-                        prop("channel"),
-                        requiredProp(""),
-                        requiredProp(""),
-                        prop("display-name"),
                         requiredProp(""),
                         prop("")
                 )
