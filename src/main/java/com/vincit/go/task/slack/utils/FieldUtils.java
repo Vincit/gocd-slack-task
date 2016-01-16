@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 public class FieldUtils {
 
-    public static HashMap createField(String name, String defaultValue, int order, boolean required) {
-        HashMap field = new HashMap();
+    public static HashMap<String, Object> createField(String name, String defaultValue, int order, boolean required) {
+        HashMap<String, Object> field = new HashMap<>();
         field.put("default-value", defaultValue);
         field.put("display-order", Integer.toString(order));
         field.put("display-name", name);

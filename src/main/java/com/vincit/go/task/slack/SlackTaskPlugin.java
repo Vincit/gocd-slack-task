@@ -72,7 +72,7 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
     @Override
     protected GoPluginApiResponse handleTaskView(GoPluginApiRequest request) {
         int responseCode = DefaultGoApiResponse.SUCCESS_RESPONSE_CODE;
-        HashMap view = new HashMap();
+        HashMap<String, String> view = new HashMap<>();
         view.put("displayValue", "Slack");
         try {
             view.put("template", fileReader.getFileContents("/views/task.template.html"));
@@ -128,7 +128,7 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
 
     @Override
     protected GoPluginApiResponse handleGetConfigRequest(GoPluginApiRequest request) {
-        HashMap config = new HashMap();
+        HashMap<String, Object> config = new HashMap<>();
         config.put(WEBHOOK_URL, createField("Webhook URL", "", 0, true));
         config.put(CHANNEL, createField("Channel", "", 1, true));
         config.put(CHANNEL_TYPE, createField("Channel Type", ChannelType.CHANNEL.name(), 2, true));
