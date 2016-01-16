@@ -27,9 +27,7 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
-import com.vincit.go.task.slack.model.Config;
-import com.vincit.go.task.slack.model.Context;
-import com.vincit.go.task.slack.model.TaskConfig;
+import com.vincit.go.task.slack.model.*;
 import com.vincit.go.task.slack.utils.MessageFormatter;
 
 import java.io.IOException;
@@ -133,15 +131,15 @@ public class SlackTaskPlugin implements GoPlugin {
 
     private GoPluginApiResponse handleGetConfigRequest() {
         HashMap config = new HashMap();
-        config.put(WEBHOOK_URL, createField("Webhook URL", 0, true));
-        config.put(CHANNEL, createField("Channel", 1, true));
-        config.put(CHANNEL_TYPE, createField("Channel Type", 2, true));
-        config.put(TITLE, createField("Title", 3, false));
-        config.put(ICON_OR_EMOJI, createField("Icon or Emoji", 4, false));
-        config.put(MESSAGE, createField("Message", 5, false));
-        config.put(DISPLAY_NAME, createField("Display Name", 6, false));
-        config.put(COLOR_TYPE, createField("Color Type", 7, false));
-        config.put(COLOR, createField("Color", 8, false));
+        config.put(WEBHOOK_URL, createField("Webhook URL", "", 0, true));
+        config.put(CHANNEL, createField("Channel", "", 1, true));
+        config.put(CHANNEL_TYPE, createField("Channel Type", ChannelType.CHANNEL.name(), 2, true));
+        config.put(TITLE, createField("Title", "", 3, false));
+        config.put(ICON_OR_EMOJI, createField("Icon or Emoji", "", 4, false));
+        config.put(MESSAGE, createField("Message", "", 5, false));
+        config.put(DISPLAY_NAME, createField("Display Name", "", 6, false));
+        config.put(COLOR_TYPE, createField("Color Type", ColorType.NONE.name(), 7, false));
+        config.put(COLOR, createField("Color", "", 8, false));
         return responseAsJson(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
     }
 
