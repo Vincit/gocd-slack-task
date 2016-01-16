@@ -17,11 +17,7 @@
 package com.vincit.go.task.slack;
 
 import com.google.gson.GsonBuilder;
-import com.thoughtworks.go.plugin.api.GoApplicationAccessor;
-import com.thoughtworks.go.plugin.api.GoPlugin;
-import com.thoughtworks.go.plugin.api.GoPluginIdentifier;
 import com.thoughtworks.go.plugin.api.annotation.Extension;
-import com.thoughtworks.go.plugin.api.exceptions.UnhandledRequestTypeException;
 import com.thoughtworks.go.plugin.api.logging.Logger;
 import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
@@ -31,7 +27,6 @@ import com.vincit.go.task.slack.model.*;
 import com.vincit.go.task.slack.utils.MessageFormatter;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,14 +35,13 @@ import static com.vincit.go.task.slack.utils.FileUtils.getFileContents;
 import static com.vincit.go.task.slack.utils.JSONUtils.responseAsJson;
 
 @Extension
-public class SlackTaskPlugin implements GoPlugin {
+public class SlackTaskPlugin extends AbstractTaskPlugin {
 
     public static final String CHANNEL = "Channel";
     public static final String CHANNEL_TYPE = "ChannelType";
     public static final String MESSAGE = "Message";
     public static final String TITLE = "Title";
     public static final String ICON_OR_EMOJI = "IconOrEmoji";
-    public static final String EXTENSION_ID = "task";
     public static final String WEBHOOK_URL = "WebhookUrl";
     public static final String DISPLAY_NAME = "DisplayName";
     public static final String COLOR = "Color";
@@ -55,27 +49,12 @@ public class SlackTaskPlugin implements GoPlugin {
 
     private Logger logger = Logger.getLoggerFor(SlackTaskPlugin.class);
 
-    @Override
-    public void initializeGoApplicationAccessor(GoApplicationAccessor goApplicationAccessor) {
+    public SlackTaskPlugin() {
+        super("task", "1.0");
     }
 
     @Override
-    public GoPluginApiResponse handle(GoPluginApiRequest request) throws UnhandledRequestTypeException {
-        logger.info("Handle received message of type: " + request.requestName());
-
-        if ("configuration".equals(request.requestName())) {
-            return handleGetConfigRequest();
-        } else if ("validate".equals(request.requestName())) {
-            return handleValidation(request);
-        } else if ("execute".equals(request.requestName())) {
-            return handleTaskExecution(request);
-        } else if ("view".equals(request.requestName())) {
-            return handleTaskView();
-        }
-        throw new UnhandledRequestTypeException(request.requestName());
-    }
-
-    private GoPluginApiResponse handleTaskView() {
+    protected GoPluginApiResponse handleTaskView(GoPluginApiRequest request) {
         int responseCode = DefaultGoApiResponse.SUCCESS_RESPONSE_CODE;
         HashMap view = new HashMap();
         view.put("displayValue", "Slack");
@@ -90,7 +69,8 @@ public class SlackTaskPlugin implements GoPlugin {
         return responseAsJson(responseCode, view);
     }
 
-    private GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) {
+    @Override
+    protected GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) {
         logger.info("handleTaskExecution");
 
         TaskConfig executionRequest = new GsonBuilder().create().fromJson(request.requestBody(), TaskConfig.class);
@@ -120,13 +100,15 @@ public class SlackTaskPlugin implements GoPlugin {
         return responseAsJson(DefaultGoApiResponse.SUCCESS_RESPONSE_CODE, result);
     }
 
-    private GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
+    @Override
+    protected GoPluginApiResponse handleValidation(GoPluginApiRequest request) {
         HashMap validationResult = new HashMap();
         int responseCode = DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE;
         return responseAsJson(responseCode, validationResult);
     }
 
-    private GoPluginApiResponse handleGetConfigRequest() {
+    @Override
+    protected GoPluginApiResponse handleGetConfigRequest(GoPluginApiRequest request) {
         HashMap config = new HashMap();
         config.put(WEBHOOK_URL, createField("Webhook URL", "", 0, true));
         config.put(CHANNEL, createField("Channel", "", 1, true));
@@ -140,8 +122,4 @@ public class SlackTaskPlugin implements GoPlugin {
         return responseAsJson(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
     }
 
-    @Override
-    public GoPluginIdentifier pluginIdentifier() {
-        return new GoPluginIdentifier(EXTENSION_ID, Arrays.asList("1.0"));
-    }
 }
