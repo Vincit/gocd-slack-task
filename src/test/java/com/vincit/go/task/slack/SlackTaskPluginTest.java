@@ -111,7 +111,6 @@ public class SlackTaskPluginTest {
         when(jsonUtil.responseAsJson(eq(200), any(Object.class))).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
-        SlackExecutor slackExecutor = mock(SlackExecutor.class);
         MockSlackContainer slack = mockSlack();
 
         SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
@@ -142,7 +141,6 @@ public class SlackTaskPluginTest {
         when(jsonUtil.responseAsJson(eq(200), any())).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
-        SlackExecutor slackExecutor = mock(SlackExecutor.class);
         MockSlackContainer slack = mockSlack();
 
         SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
@@ -167,7 +165,6 @@ public class SlackTaskPluginTest {
         JsonUtil jsonUtil = new JsonUtil();
 
         FileReader fileReader = mock(FileReader.class);
-        SlackExecutor slackExecutor = mock(SlackExecutor.class);
         MockSlackContainer slack = mockSlack();
 
         SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
