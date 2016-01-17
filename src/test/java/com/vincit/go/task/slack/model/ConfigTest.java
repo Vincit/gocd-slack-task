@@ -1,13 +1,17 @@
 package com.vincit.go.task.slack.model;
 
 
+import com.vincit.go.task.slack.utils.FileReader;
+import com.vincit.go.task.slack.utils.JsonUtil;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 
 public class ConfigTest {
@@ -119,6 +123,30 @@ public class ConfigTest {
         Map<String, String> expected = new HashMap<>();
         expected.put("Color", "Color must be defined when using custom color");
         assertThat(errors, is(expected));
+    }
+
+    @Test
+    public void parseTargetConfig() throws Exception {
+        TaskConfig taskConfig = new JsonUtil().fromJSON(
+                new FileReader().getFileContents("/json/task_config.json"),
+                TaskConfig.class
+        );
+
+        assertThat(taskConfig.getConfig(), notNullValue());
+        assertThat(taskConfig.getConfig().getWebhookUrl(), is("https://example.org"));
+        assertThat(taskConfig.getConfig().getChannel(), is("channel"));
+        assertThat(taskConfig.getConfig().getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(taskConfig.getConfig().getDisplayName(), is("display-name"));
+        assertThat(taskConfig.getConfig().getTitle(), is("title"));
+        assertThat(taskConfig.getConfig().getMessage(), is("message"));
+        assertThat(taskConfig.getConfig().getIconOrEmoji(), is(":tada:"));
+        assertThat(taskConfig.getConfig().getColorType(), is(ColorType.CUSTOM));
+        assertThat(taskConfig.getConfig().getColor(), is("f00f00"));
+
+        assertThat(taskConfig.getContext(), notNullValue());
+        assertThat(taskConfig.getContext().getEnvironmentVariables(), hasKey("VAR1"));
+        assertThat(taskConfig.getContext().getEnvironmentVariables(), hasKey("VAR2"));
+
     }
 
     private Config configWithColor(String colorType, String color) {

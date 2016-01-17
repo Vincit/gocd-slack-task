@@ -1,0 +1,55 @@
+{
+  "config": {
+    "Message": {
+      "secure": false,
+      "required": false,
+      "value": "message"
+    },
+    "Title": {
+      "secure": false,
+      "required": false,
+      "value": "title"
+    },
+    "IconOrEmoji": {
+      "secure": false,
+      "required": false,
+      "value": ":tada:"
+    },
+    "Channel": {
+      "secure": false,
+      "required": false,
+      "value": "channel"
+    },
+    "ChannelType": {
+      "secure": false,
+      "required": false,
+      "value": "Channel"
+    },
+    "WebhookUrl": {
+      "secure": false,
+      "required": false,
+      "value": "https://example.org"
+    },
+    "DisplayName": {
+      "secure": false,
+      "required": false,
+      "value": "display-name"
+    },
+    "ColorType": {
+      "secure": false,
+      "required": false,
+      "value": "Custom"
+    },
+    "Color": {
+      "secure": false,
+      "required": false,
+      "value": "f00f00"
+    }
+  },
+  "context": {
+    "environmentVariables": {
+      "VAR1": "Value1",
+      "VAR2": "Value2"
+    }
+  }
+}
