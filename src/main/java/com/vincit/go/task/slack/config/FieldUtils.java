@@ -1,4 +1,7 @@
-package com.vincit.go.task.slack.utils;
+package com.vincit.go.task.slack.config;
+
+import com.vincit.go.task.slack.utils.Required;
+import com.vincit.go.task.slack.utils.Secure;
 
 import java.util.HashMap;
 

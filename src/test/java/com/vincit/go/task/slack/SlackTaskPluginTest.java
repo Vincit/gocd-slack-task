@@ -4,6 +4,7 @@ import com.thoughtworks.go.plugin.api.request.DefaultGoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import com.vincit.go.task.slack.config.ConfigProvider;
 import com.vincit.go.task.slack.executor.SlackExecutor;
 import com.vincit.go.task.slack.executor.TaskSlackDestination;
 import com.vincit.go.task.slack.executor.TaskSlackMessage;
@@ -129,9 +130,9 @@ public class SlackTaskPluginTest {
 
         Map<String, Map<String, String>> validationResult = (Map)objectCaptor.getValue();
         Map<String, String> expected = new HashMap<>();
-        expected.put(SlackTaskPlugin.CHANNEL_TYPE, "Channel type is required");
-        expected.put(SlackTaskPlugin.WEBHOOK_URL, "Webhook URL is required");
-        expected.put(SlackTaskPlugin.COLOR_TYPE, "Color type is required");
+        expected.put(ConfigProvider.CHANNEL_TYPE, "Channel type is required");
+        expected.put(ConfigProvider.WEBHOOK_URL, "Webhook URL is required");
+        expected.put(ConfigProvider.COLOR_TYPE, "Color type is required");
         assertThat(validationResult.get("errors"), is(expected));
     }
 

@@ -22,30 +22,23 @@ import com.thoughtworks.go.plugin.api.request.GoPluginApiRequest;
 import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
+import com.vincit.go.task.slack.config.ConfigProvider;
 import com.vincit.go.task.slack.executor.SlackExecutor;
 import com.vincit.go.task.slack.executor.TaskSlackDestination;
 import com.vincit.go.task.slack.executor.TaskSlackMessage;
-import com.vincit.go.task.slack.model.*;
-import com.vincit.go.task.slack.utils.*;
+import com.vincit.go.task.slack.model.Config;
+import com.vincit.go.task.slack.model.Context;
+import com.vincit.go.task.slack.model.TaskConfig;
+import com.vincit.go.task.slack.utils.FileReader;
+import com.vincit.go.task.slack.utils.JsonUtil;
+import com.vincit.go.task.slack.utils.MessageFormatter;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.vincit.go.task.slack.utils.FieldUtils.createField;
-
 @Extension
 public class SlackTaskPlugin extends AbstractTaskPlugin {
-
-    public static final String CHANNEL = "Channel";
-    public static final String CHANNEL_TYPE = "ChannelType";
-    public static final String MESSAGE = "Message";
-    public static final String TITLE = "Title";
-    public static final String ICON_OR_EMOJI = "IconOrEmoji";
-    public static final String WEBHOOK_URL = "WebhookUrl";
-    public static final String DISPLAY_NAME = "DisplayName";
-    public static final String COLOR = "Color";
-    public static final String COLOR_TYPE = "ColorType";
 
     private Logger logger = Logger.getLoggerFor(SlackTaskPlugin.class);
 
@@ -137,17 +130,10 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
 
     @Override
     protected GoPluginApiResponse handleGetConfigRequest(GoPluginApiRequest request) {
-        HashMap<String, Object> config = new HashMap<>();
-        config.put(WEBHOOK_URL, createField("", Secure.NO, Required.YES));
-        config.put(CHANNEL, createField("", Secure.NO, Required.YES));
-        config.put(CHANNEL_TYPE, createField(ChannelType.CHANNEL.getDisplayValue(), Secure.NO, Required.YES));
-        config.put(TITLE, createField("", Secure.NO, Required.NO));
-        config.put(ICON_OR_EMOJI, createField("", Secure.NO, Required.NO));
-        config.put(MESSAGE, createField("", Secure.NO, Required.NO));
-        config.put(DISPLAY_NAME, createField("", Secure.NO, Required.NO));
-        config.put(COLOR_TYPE, createField(ColorType.NONE.getDisplayValue(), Secure.NO, Required.YES));
-        config.put(COLOR, createField("", Secure.NO, Required.NO));
-        return jsonUtil.responseAsJson(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
+        return jsonUtil.responseAsJson(
+                DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE,
+                ConfigProvider.getFieldConfig()
+        );
     }
 
 }
