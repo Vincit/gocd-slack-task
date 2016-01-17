@@ -88,11 +88,11 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
             MessageFormatter messageFormatter = new MessageFormatter(context.getEnvironmentVariables());
 
             TaskSlackMessage message = new TaskSlackMessage(
+                    messageFormatter.format(config.getDisplayName()),
                     messageFormatter.format(config.getTitle()),
                     messageFormatter.format(config.getMessage()),
                     config.getIconOrEmoji(),
-                    config.getColor(),
-                    messageFormatter.format(config.getDisplayName())
+                    config.getColor()
             );
 
             TaskSlackDestination destination = new TaskSlackDestination(

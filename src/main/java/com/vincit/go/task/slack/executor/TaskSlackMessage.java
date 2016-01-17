@@ -8,7 +8,7 @@ public class TaskSlackMessage {
     private final String color;
     private final String displayName;
 
-    public TaskSlackMessage(String title, String message, String iconOrEmoji, String color, String displayName) {
+    public TaskSlackMessage(String displayName, String title, String message, String iconOrEmoji, String color) {
         this.title = title;
         this.message = message;
         this.iconOrEmoji = iconOrEmoji;

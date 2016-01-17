@@ -45,7 +45,7 @@ public class SlackExecutorTest {
 
         SlackExecutor executor = new SlackExecutor(slack, destination);
         TaskSlackMessage message = new TaskSlackMessage(
-                "title", "message", "iconOrEmoji", "good", "displayName"
+                "displayName", "title", "message", "iconOrEmoji", "good"
         );
         executor.sendMessage(message);
 
