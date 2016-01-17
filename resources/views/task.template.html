@@ -7,18 +7,18 @@
   </span>
 </div>
 <div class="form_item_block">
-  <label for="Channel">Channel:</label>
+  <label for="Channel">Channel:<span class="asterisk">*</span></label>
   <div class="path_textbox">
     <label ng-show="ChannelType == 'Channel'">#</label>
     <label ng-show="ChannelType == 'User'">@</label>
-    <input type="text" id="Channel" ng-model="Channel" ng-required="false">
+    <input type="text" id="Channel" ng-model="Channel" ng-required="true">
     <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
       {{ GOINPUTNAME[Channel].$error.server }}
     </span>
   </div>
 </div>
 <div class="form_item_block">
-  <label>Channel type:</label>
+  <label>Channel type:<span class="asterisk">*</span></label>
   <div class="checkbox_row">
     <input id="channelTypeChannel" type="radio" ng-model="ChannelType" value="Channel">
     <label for="channelTypeChannel">Channel</label>
@@ -62,7 +62,7 @@
   </span>
 </div>
 <div class="form_item_block">
-  <label>Color:</label>
+  <label>Color:<span class="asterisk">*</span></label>
   <div class="checkbox_row">
     <input id="colorNone" type="radio" ng-model="ColorType" value="None">
     <label for="colorNone">None</label>
@@ -80,7 +80,7 @@
   </span>
 </div>
 <div class="form_item_block">
-  <label for="Color">Custom Color:</label>
+  <label for="Color">Custom Color:<span class="asterisk" ng-show="ColorType == 'Custom'">*</span></label>
   <div class="path_textbox">
     <label for="Color">#</label><input type="text" id="Color" ng-model="Color" ng-disabled="ColorType != 'Custom'">
     <span class="form_error" ng-show="GOINPUTNAME[Color].$error.server">
