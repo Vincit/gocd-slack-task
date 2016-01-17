@@ -14,8 +14,8 @@ Configuration
 * Title: Message title (e.g. Deployed to production)
 * Message: Actual message
 * Icon or Emoji: Icon URL or Slack emoji (e.g. `https://example.org/icon.png` or `:tada:`)
-* Color type (required): Color type
-* Color: Color six hex digit code without `#` (e.g. `ff0000` for red)
+* Color (required): Pre-defined colors
+* Custom color: Custom color as six hex digit code without `#` (e.g. `ff0000` for red). Only when custom color is selected as the color.
 
 ### Message formatting
 
