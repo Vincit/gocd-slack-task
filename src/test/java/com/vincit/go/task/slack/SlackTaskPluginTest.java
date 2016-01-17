@@ -5,9 +5,7 @@ import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.vincit.go.task.slack.config.ConfigProvider;
-import com.vincit.go.task.slack.executor.SlackExecutor;
-import com.vincit.go.task.slack.executor.TaskSlackDestination;
-import com.vincit.go.task.slack.executor.TaskSlackMessage;
+import com.vincit.go.task.slack.executor.*;
 import com.vincit.go.task.slack.model.*;
 import com.vincit.go.task.slack.utils.FileReader;
 import com.vincit.go.task.slack.utils.JsonUtil;
@@ -28,6 +26,33 @@ import static org.mockito.Mockito.when;
 
 public class SlackTaskPluginTest {
 
+    private static class MockSlackContainer {
+
+        private SlackExecutor slackExecutor;
+        private SlackExecutorFactory slackExecutorFactory;
+        private ArgumentCaptor<TaskSlackDestination> destinationCaptor;
+
+        public MockSlackContainer(SlackExecutor slackExecutor, SlackExecutorFactory slackExecutorFactory, ArgumentCaptor<TaskSlackDestination> destinationCaptor) {
+            this.slackExecutor = slackExecutor;
+            this.slackExecutorFactory = slackExecutorFactory;
+            this.destinationCaptor = destinationCaptor;
+        }
+    }
+
+    private MockSlackContainer mockSlack() {
+        SlackExecutorFactory slackExecutorFactory = mock(SlackExecutorFactory.class);
+        SlackExecutor slackExecutor = mock(SlackExecutor.class);
+        ArgumentCaptor<TaskSlackDestination> destinationCaptor = ArgumentCaptor.forClass(TaskSlackDestination.class);
+        when(slackExecutorFactory.forDestination(destinationCaptor.capture())).thenReturn(slackExecutor);
+
+        return new MockSlackContainer(
+                slackExecutor,
+                slackExecutorFactory,
+                destinationCaptor
+        );
+    }
+
+
     @Test
     public void testHandleTaskExecution() throws Exception {
         JsonUtil jsonUtil = mock(JsonUtil.class);
@@ -45,25 +70,24 @@ public class SlackTaskPluginTest {
         when(jsonUtil.responseAsJson(eq(200), anyMap())).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
-        SlackExecutor slackExecutor = mock(SlackExecutor.class);
+        MockSlackContainer slack = mockSlack();
 
-        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slackExecutor);
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
         DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "execute");
         request.setRequestBody("test-request");
         GoPluginApiResponse response = plugin.handle(request);
 
 
-        ArgumentCaptor<TaskSlackDestination> destinationCaptor = ArgumentCaptor.forClass(TaskSlackDestination.class);
         ArgumentCaptor<TaskSlackMessage> messageCaptor = ArgumentCaptor.forClass(TaskSlackMessage.class);
-        verify(slackExecutor).sendMessage(destinationCaptor.capture(), messageCaptor.capture());
+        verify(slack.slackExecutor).sendMessage(messageCaptor.capture());
 
 
         assertThat(response.responseCode(), is(DefaultGoApiResponse.SUCCESS_RESPONSE_CODE));
 
-        assertThat(destinationCaptor.getValue().getWebhookUrl(), is("webhook"));
-        assertThat(destinationCaptor.getValue().getChannel(), is("channel"));
-        assertThat(destinationCaptor.getValue().getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(slack.destinationCaptor.getValue().getWebhookUrl(), is("webhook"));
+        assertThat(slack.destinationCaptor.getValue().getChannel(), is("channel"));
+        assertThat(slack.destinationCaptor.getValue().getChannelType(), is(ChannelType.CHANNEL));
 
         assertThat(messageCaptor.getValue().getDisplayName(), is("display-name"));
         assertThat(messageCaptor.getValue().getTitle(), is("title"));
@@ -88,8 +112,9 @@ public class SlackTaskPluginTest {
 
         FileReader fileReader = mock(FileReader.class);
         SlackExecutor slackExecutor = mock(SlackExecutor.class);
+        MockSlackContainer slack = mockSlack();
 
-        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slackExecutor);
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
         DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "validate");
         request.setRequestBody("test-request");
@@ -118,8 +143,9 @@ public class SlackTaskPluginTest {
 
         FileReader fileReader = mock(FileReader.class);
         SlackExecutor slackExecutor = mock(SlackExecutor.class);
+        MockSlackContainer slack = mockSlack();
 
-        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slackExecutor);
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
         DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "validate");
         request.setRequestBody("test-request");
@@ -142,8 +168,9 @@ public class SlackTaskPluginTest {
 
         FileReader fileReader = mock(FileReader.class);
         SlackExecutor slackExecutor = mock(SlackExecutor.class);
+        MockSlackContainer slack = mockSlack();
 
-        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slackExecutor);
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
         DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "configuration");
         request.setRequestBody("test-request");

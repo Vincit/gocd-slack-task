@@ -23,7 +23,7 @@ import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.vincit.go.task.slack.config.ConfigProvider;
-import com.vincit.go.task.slack.executor.SlackExecutor;
+import com.vincit.go.task.slack.executor.SlackExecutorFactory;
 import com.vincit.go.task.slack.executor.TaskSlackDestination;
 import com.vincit.go.task.slack.executor.TaskSlackMessage;
 import com.vincit.go.task.slack.model.Config;
@@ -44,20 +44,20 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
 
     private JsonUtil jsonUtil;
     private FileReader fileReader;
-    private SlackExecutor slackExecutor;
+    private SlackExecutorFactory slackExecutorFactory;
 
     public SlackTaskPlugin() {
         super("task", "1.0");
         jsonUtil = new JsonUtil();
         fileReader = new FileReader();
-        slackExecutor = new SlackExecutor();
+        slackExecutorFactory = new SlackExecutorFactory();
     }
 
-    public SlackTaskPlugin(JsonUtil jsonUtil, FileReader fileReader, SlackExecutor slackExecutor) {
+    public SlackTaskPlugin(JsonUtil jsonUtil, FileReader fileReader, SlackExecutorFactory slackExecutorFactory) {
         this();
         this.jsonUtil = jsonUtil;
         this.fileReader = fileReader;
-        this.slackExecutor = slackExecutor;
+        this.slackExecutorFactory = slackExecutorFactory;
     }
 
     @Override
@@ -100,7 +100,8 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
                     config.getChannelType(),
                     config.getChannel()
             );
-            slackExecutor.sendMessage(destination, message);
+
+            slackExecutorFactory.forDestination(destination).sendMessage(message);
         } catch (IOException e) {
             throw new RuntimeException("Could not send message to slack", e);
         }

@@ -8,14 +8,25 @@ import java.io.IOException;
 
 public class SlackExecutor {
 
-    public void sendMessage(TaskSlackDestination destination, TaskSlackMessage message) throws IOException {
-        Slack slack = new Slack(destination.getWebhookUrl());
+    private Slack slack;
+    private TaskSlackDestination destination;
 
+    SlackExecutor(Slack slack, TaskSlackDestination destination) {
+        this.slack = slack;
+        this.destination = destination;
+    }
+
+    SlackExecutor(TaskSlackDestination destination) {
+        this.destination = destination;
+        this.slack = new Slack(destination.getWebhookUrl());
+    }
+
+    public void sendMessage(TaskSlackMessage message) throws IOException {
         SlackAttachment attachment = new SlackAttachment(message.getMessage())
                 .color(message.getColor())
                 .title(message.getTitle());
 
-        updateChannel(slack, destination);
+        updateChannel(destination);
 
         slack.displayName(message.getDisplayName());
         slack.icon(message.getIconOrEmoji());
@@ -23,7 +34,7 @@ public class SlackExecutor {
         slack.push(attachment);
     }
 
-    private void updateChannel(Slack slack, TaskSlackDestination destination) {
+    private void updateChannel(TaskSlackDestination destination) {
         if (destination.getChannelType() == ChannelType.CHANNEL) {
             slack.sendToChannel(destination.getChannel());
         } else {
