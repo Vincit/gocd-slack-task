@@ -1,6 +1,6 @@
 package com.vincit.go.task.slack.model;
 
-public enum ColorType {
+public enum ColorType implements UiValue {
 
     NONE("None"),
     GOOD("Good"),
@@ -14,6 +14,7 @@ public enum ColorType {
         this.displayValue = displayValue;
     }
 
+    @Override
     public String getDisplayValue() {
         return displayValue;
     }

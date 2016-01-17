@@ -1,6 +1,6 @@
 package com.vincit.go.task.slack.model;
 
-public enum ChannelType {
+public enum ChannelType implements UiValue {
 
     CHANNEL("Channel"),
     USER("User");
@@ -11,6 +11,7 @@ public enum ChannelType {
         this.displayValue = displayValue;
     }
 
+    @Override
     public String getDisplayValue() {
         return displayValue;
     }
