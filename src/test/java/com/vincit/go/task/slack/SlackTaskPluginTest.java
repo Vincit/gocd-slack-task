@@ -18,6 +18,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
@@ -82,6 +83,7 @@ public class SlackTaskPluginTest {
                         prop("00ff00")
                 )
         );
+        when(jsonUtil.responseAsJson(eq(200), any(Object.class))).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
         SlackExecutor slackExecutor = mock(SlackExecutor.class);
@@ -111,6 +113,7 @@ public class SlackTaskPluginTest {
                         prop("")
                 )
         );
+        when(jsonUtil.responseAsJson(eq(200), any())).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
         SlackExecutor slackExecutor = mock(SlackExecutor.class);
@@ -130,6 +133,33 @@ public class SlackTaskPluginTest {
         expected.put(SlackTaskPlugin.WEBHOOK_URL, "Webhook URL is required");
         expected.put(SlackTaskPlugin.COLOR_TYPE, "Color type is required");
         assertThat(validationResult.get("errors"), is(expected));
+    }
+
+    @Test
+    public void testConfig() throws Exception {
+        JsonUtil jsonUtil = new JsonUtil();
+
+        FileReader fileReader = mock(FileReader.class);
+        SlackExecutor slackExecutor = mock(SlackExecutor.class);
+
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slackExecutor);
+
+        DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "configuration");
+        request.setRequestBody("test-request");
+        GoPluginApiResponse response = plugin.handle(request);
+
+        assertThat(response.responseBody(),
+                is("{" +
+                        "\"WebhookUrl\":{\"default-value\":\"\",\"secure\":false,\"required\":true}," +
+                        "\"Message\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
+                        "\"IconOrEmoji\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
+                        "\"Channel\":{\"default-value\":\"\",\"secure\":false,\"required\":true}," +
+                        "\"Color\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
+                        "\"DisplayName\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
+                        "\"Title\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
+                        "\"ColorType\":{\"default-value\":\"None\",\"secure\":false,\"required\":true}," +
+                        "\"ChannelType\":{\"default-value\":\"Channel\",\"secure\":false,\"required\":true}" +
+                    "}"));
     }
 
     private static Property prop(String value) {

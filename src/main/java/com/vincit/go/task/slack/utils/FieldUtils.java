@@ -4,12 +4,11 @@ import java.util.HashMap;
 
 public class FieldUtils {
 
-    public static HashMap<String, Object> createField(String name, String defaultValue, int order, boolean required) {
+    public static HashMap<String, Object> createField(String defaultValue, Secure secure, Required required) {
         HashMap<String, Object> field = new HashMap<>();
         field.put("default-value", defaultValue);
-        field.put("display-order", Integer.toString(order));
-        field.put("display-name", name);
-        field.put("required", required);
+        field.put("secure", secure == Secure.YES);
+        field.put("required", required == Required.YES);
         return field;
     }
 

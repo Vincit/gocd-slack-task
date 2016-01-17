@@ -26,9 +26,7 @@ import com.vincit.go.task.slack.executor.SlackExecutor;
 import com.vincit.go.task.slack.executor.TaskSlackDestination;
 import com.vincit.go.task.slack.executor.TaskSlackMessage;
 import com.vincit.go.task.slack.model.*;
-import com.vincit.go.task.slack.utils.FileReader;
-import com.vincit.go.task.slack.utils.JsonUtil;
-import com.vincit.go.task.slack.utils.MessageFormatter;
+import com.vincit.go.task.slack.utils.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -140,15 +138,15 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
     @Override
     protected GoPluginApiResponse handleGetConfigRequest(GoPluginApiRequest request) {
         HashMap<String, Object> config = new HashMap<>();
-        config.put(WEBHOOK_URL, createField("Webhook URL", "", 0, true));
-        config.put(CHANNEL, createField("Channel", "", 1, true));
-        config.put(CHANNEL_TYPE, createField("Channel Type", ChannelType.CHANNEL.name(), 2, true));
-        config.put(TITLE, createField("Title", "", 3, false));
-        config.put(ICON_OR_EMOJI, createField("Icon or Emoji", "", 4, false));
-        config.put(MESSAGE, createField("Message", "", 5, false));
-        config.put(DISPLAY_NAME, createField("Display Name", "", 6, false));
-        config.put(COLOR_TYPE, createField("Color Type", ColorType.NONE.name(), 7, false));
-        config.put(COLOR, createField("Color", "", 8, false));
+        config.put(WEBHOOK_URL, createField("", Secure.NO, Required.YES));
+        config.put(CHANNEL, createField("", Secure.NO, Required.YES));
+        config.put(CHANNEL_TYPE, createField(ChannelType.CHANNEL.getDisplayValue(), Secure.NO, Required.YES));
+        config.put(TITLE, createField("", Secure.NO, Required.NO));
+        config.put(ICON_OR_EMOJI, createField("", Secure.NO, Required.NO));
+        config.put(MESSAGE, createField("", Secure.NO, Required.NO));
+        config.put(DISPLAY_NAME, createField("", Secure.NO, Required.NO));
+        config.put(COLOR_TYPE, createField(ColorType.NONE.getDisplayValue(), Secure.NO, Required.YES));
+        config.put(COLOR, createField("", Secure.NO, Required.NO));
         return jsonUtil.responseAsJson(DefaultGoPluginApiResponse.SUCCESS_RESPONSE_CODE, config);
     }
 
