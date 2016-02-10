@@ -27,3 +27,10 @@ Environment variables can be referenced in messages using the dollar symbol: `$E
 The plugin currently only supports adding the environment variables as is.
 Normal Bash string manipulation is not supported. Referencing parameters works the
 same way it does in Go (e.g. `#{paramName}`).
+
+License
+-------
+
+[http://www.apache.org/licenses/LICENSE-2.0]
+
+Copyright 2015 - 2016 Juha Siponen
