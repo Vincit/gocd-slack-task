@@ -173,18 +173,20 @@ public class SlackTaskPluginTest {
         request.setRequestBody("test-request");
         GoPluginApiResponse response = plugin.handle(request);
 
-        assertThat(response.responseBody(),
-                is("{" +
-                        "\"WebhookUrl\":{\"default-value\":\"\",\"secure\":false,\"required\":true}," +
-                        "\"Message\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
-                        "\"IconOrEmoji\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
-                        "\"Channel\":{\"default-value\":\"\",\"secure\":false,\"required\":true}," +
-                        "\"Color\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
-                        "\"DisplayName\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
-                        "\"Title\":{\"default-value\":\"\",\"secure\":false,\"required\":false}," +
-                        "\"ColorType\":{\"default-value\":\"None\",\"secure\":false,\"required\":true}," +
-                        "\"ChannelType\":{\"default-value\":\"Channel\",\"secure\":false,\"required\":true}" +
-                    "}"));
+        HashMap config = new JsonUtil().fromJSON(response.responseBody(), HashMap.class);
+
+        HashMap<String, Map> expected = new HashMap<>();
+        expected.put("WebhookUrl", requiredField());
+        expected.put("Message", field());
+        expected.put("IconOrEmoji", field());
+        expected.put("Channel", requiredField());
+        expected.put("Color", field());
+        expected.put("DisplayName", field());
+        expected.put("Title", field());
+        expected.put("ColorType", requiredFieldWithDefaultValue("None"));
+        expected.put("ChannelType", requiredFieldWithDefaultValue("Channel"));
+
+        assertThat(config, is((HashMap)expected));
     }
 
     private static Property prop(String value) {
@@ -193,6 +195,30 @@ public class SlackTaskPluginTest {
 
     private static Property requiredProp(String value) {
         return new Property(value, false, true);
+    }
+
+    private HashMap<String, Object> field() {
+        return new HashMap<String, Object>() {{
+            put("default-value", "");
+            put("secure", false);
+            put("required", false);
+        }};
+    }
+
+    private HashMap<String, Object> requiredFieldWithDefaultValue(final String defaultValue) {
+        return new HashMap<String, Object>() {{
+            put("default-value", defaultValue);
+            put("secure", false);
+            put("required", true);
+        }};
+    }
+
+    private HashMap<String, Object> requiredField() {
+        return new HashMap<String, Object>() {{
+            put("default-value", "");
+            put("secure", false);
+            put("required", true);
+        }};
     }
 
 }
