@@ -1,7 +1,7 @@
 Go Slack Task Plugin
 ====================
 
-This plugin allows [https://www.go.cd/](Go CD) to send custom messages to Slack
+This plugin allows [Go CD](https://www.go.cd/) to send custom messages to Slack
 from any job. Use this plugin for example to notify about successful/failed deployments
 to the Slack channel or user.
 
