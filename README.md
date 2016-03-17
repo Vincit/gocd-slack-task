@@ -5,6 +5,13 @@ This plugin allows [Go CD](https://www.go.cd/) to send custom messages to Slack
 from any job. Use this plugin for example to notify about successful/failed deployments
 to the Slack channel or user.
 
+Installation
+------------
+
+ 1. Download latest plugin JAR from [releases](releases)
+ 2. Place the JAR to GoCD's external plugin directory (`<go-server-location>/plugins/external`)
+ 3. Restart GoCD server
+
 Configuration
 -------------
 
