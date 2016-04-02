@@ -21,6 +21,7 @@ public class ConfigProvider {
     public static final String DISPLAY_NAME = "DisplayName";
     public static final String COLOR = "Color";
     public static final String COLOR_TYPE = "ColorType";
+    public static final String MARKDOWN_IN_TEXT = "MarkdownInText";
 
     private static Map<String, HashMap<String, Object>> fieldConfig = new HashMap<>();
 
@@ -34,6 +35,7 @@ public class ConfigProvider {
         fieldConfig.put(DISPLAY_NAME, createField("", Secure.NO, Required.NO));
         fieldConfig.put(COLOR_TYPE, createField(ColorType.NONE.getDisplayValue(), Secure.NO, Required.YES));
         fieldConfig.put(COLOR, createField("", Secure.NO, Required.NO));
+        fieldConfig.put(MARKDOWN_IN_TEXT, createField("", Secure.NO, Required.NO));
     }
 
     public static Map<String, ?> getFieldConfig() {

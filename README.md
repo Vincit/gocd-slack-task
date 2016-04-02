@@ -23,6 +23,7 @@ Configuration
 |Display name|Sender name (e.g. Go CD)|Yes|
 |Title|Message title (e.g. Deployed to production)|Yes|
 |Message|Actual message|No|
+|Message: Slack message formatting|Enable Slack message formatting for the message|No|
 |Icon or Emoji|Icon URL or Slack emoji (e.g. `https://example.org/icon.png` or `:tada:`)|No|
 |Color|Pre-defined colors|Yes|
 |Custom color|Custom color as a six hex digit code without `#` (e.g. `ff0000` for red). Only when custom color is selected as the color.|No|
@@ -34,6 +35,10 @@ Environment variables can be referenced in messages using the dollar symbol: `$E
 The plugin currently only supports adding the environment variables as is.
 Normal Bash string manipulation is not supported. Referencing parameters works the
 same way it does in Go (e.g. `#{paramName}`).
+
+It is possible to format the message using [Slack's message formatting options](https://get.slack.help/hc/en-us/articles/202288908-How-can-I-add-formatting-to-my-messages-).
+Formatting can be enabled for the message via the _Slack message formatting_ checkbox under
+the message input. Display name and title fields don't support message formatting.
 
 License
 -------

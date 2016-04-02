@@ -4,6 +4,8 @@ Changelog
 1.2
 ---
 
+ * Add support for Slack message formatting in message
+
 1.1
 ---
 

@@ -92,7 +92,8 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
                     messageFormatter.format(config.getTitle()),
                     messageFormatter.format(config.getMessage()),
                     config.getIconOrEmoji(),
-                    config.getColor()
+                    config.getColor(),
+                    config.getMarkdownIns()
             );
 
             TaskSlackDestination destination = new TaskSlackDestination(

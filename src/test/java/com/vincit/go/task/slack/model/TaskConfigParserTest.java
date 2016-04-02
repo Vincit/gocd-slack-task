@@ -2,6 +2,10 @@ package com.vincit.go.task.slack.model;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -40,7 +44,10 @@ public class TaskConfigParserTest {
                 "        },\n" +
                 "        \"Color\": {\n" +
                 "            \"value\": \"F00F00\"\n" +
-                "        }\n" +
+                "        },\n" +
+                "        \"MarkdownInText\": {\n" +
+                "            \"value\": \"true\"\n" +
+                "        }" +
                 "    },\n" +
                 "    \"context\": {\n" +
                 "        \"environmentVariables\": {\n" +
@@ -62,6 +69,8 @@ public class TaskConfigParserTest {
         assertThat(config.getConfig().getDisplayName(), is("Display Name"));
         assertThat(config.getConfig().getColorType(), is(ColorType.CUSTOM));
         assertThat(config.getConfig().getColor(), is("F00F00"));
+        Set<MarkdownField> expectedMarkdownIns = new HashSet<>(Arrays.asList(MarkdownField.TEXT));
+        assertThat(config.getConfig().getMarkdownIns(), is(expectedMarkdownIns));
 
         assertThat(config.getContext(), notNullValue());
         assertThat(config.getContext().getEnvironmentVariables(), notNullValue());

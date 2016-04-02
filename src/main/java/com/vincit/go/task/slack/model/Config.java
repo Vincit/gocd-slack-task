@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import com.vincit.go.task.slack.config.ConfigProvider;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Config {
 
@@ -26,11 +28,13 @@ public class Config {
     private Property colorType;
     @SerializedName("Color")
     private Property color;
+    @SerializedName("MarkdownInText")
+    private Property markdownInText;
 
     public Config() {
     }
 
-    public Config(Property webhookUrl, Property channel, Property channelType, Property displayName, Property title, Property message, Property iconOrEmoji, Property colorType, Property color) {
+    public Config(Property webhookUrl, Property channel, Property channelType, Property displayName, Property title, Property message, Property iconOrEmoji, Property colorType, Property color, Property markdownInText) {
         this.message = message;
         this.title = title;
         this.iconOrEmoji = iconOrEmoji;
@@ -40,6 +44,7 @@ public class Config {
         this.displayName = displayName;
         this.colorType = colorType;
         this.color = color;
+        this.markdownInText = markdownInText;
     }
 
     private String getValueOr(Property property, String value) {
@@ -144,4 +149,17 @@ public class Config {
     }
 
 
+    public Set<MarkdownField> getMarkdownIns() {
+        Set<MarkdownField> markdownIns = new HashSet<>();
+
+        addFieldIfSet(markdownInText, MarkdownField.TEXT, markdownIns);
+
+        return markdownIns;
+    }
+
+    private void addFieldIfSet(Property property, MarkdownField field, Set<MarkdownField> ins) {
+        if (property != null && property.isPresent() && Boolean.valueOf(property.getValueOr("false"))) {
+            ins.add(field);
+        }
+    }
 }

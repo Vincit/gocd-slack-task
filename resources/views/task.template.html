@@ -52,6 +52,19 @@
   <span class="form_error" ng-show="GOINPUTNAME[Message].$error.server">
     {{ GOINPUTNAME[Message].$error.server }}
   </span>
+  <div class="checkbox_row">
+    <input id="markdownInText" type="checkbox" ng-model="cbMarkdownInText"
+           ng-init="cbMarkdownInText = MarkdownInText"
+           ng-change="MarkdownInText = cbMarkdownInText"
+           ng-true-value="true" ng-false-value="false">
+    <input type="hidden" value="{{MarkdownInText}}" ng-model="MarkdownInText">
+    <label for="markdownInText">
+      Slack message formatting (See <a href="https://get.slack.help/hc/en-us/articles/202288908-How-can-I-add-formatting-to-my-messages-" target="_blank">Slack help</a>)
+    </label>
+  </div>
+  <span class="form_error" ng-show="GOINPUTNAME[MarkdownInText].$error.server">
+      {{ GOINPUTNAME[MarkdownInText].$error.server }}
+  </span>
 </div>
 <div class="form_item_block">
   <label for="IconOrEmoji">Icon or Emoji</label>

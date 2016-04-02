@@ -1,6 +1,7 @@
 package com.vincit.go.task.slack.executor;
 
 import com.vincit.go.task.slack.model.ChannelType;
+import com.vincit.go.task.slack.model.MarkdownField;
 import in.ashwanthkumar.slack.webhook.Slack;
 import in.ashwanthkumar.slack.webhook.SlackAttachment;
 
@@ -25,6 +26,10 @@ public class SlackExecutor {
         SlackAttachment attachment = new SlackAttachment(message.getMessage())
                 .color(message.getColor())
                 .title(message.getTitle());
+
+        for (MarkdownField field : message.getMarkdownIns()) {
+            attachment.addMarkdownIn(field.getApiValue());
+        }
 
         updateChannel(destination);
 

@@ -5,7 +5,10 @@ import com.thoughtworks.go.plugin.api.response.DefaultGoApiResponse;
 import com.thoughtworks.go.plugin.api.response.DefaultGoPluginApiResponse;
 import com.thoughtworks.go.plugin.api.response.GoPluginApiResponse;
 import com.vincit.go.task.slack.config.ConfigProvider;
-import com.vincit.go.task.slack.executor.*;
+import com.vincit.go.task.slack.executor.SlackExecutor;
+import com.vincit.go.task.slack.executor.SlackExecutorFactory;
+import com.vincit.go.task.slack.executor.TaskSlackDestination;
+import com.vincit.go.task.slack.executor.TaskSlackMessage;
 import com.vincit.go.task.slack.model.*;
 import com.vincit.go.task.slack.utils.FileReader;
 import com.vincit.go.task.slack.utils.JsonUtil;
@@ -20,9 +23,7 @@ import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyMap;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class SlackTaskPluginTest {
 
@@ -62,7 +63,8 @@ public class SlackTaskPluginTest {
                                 prop("webhook"), prop("channel"), prop("CHANNEL"), prop("display-name"), prop("title"), prop("message"),
                                 prop("icon"),
                                 prop("CUSTOM"),
-                                prop("00ff00")
+                                prop("00ff00"),
+                                prop(null)
                         ),
                         new Context(new HashMap<String, String>())
                 )
@@ -105,7 +107,8 @@ public class SlackTaskPluginTest {
                         requiredProp("webhook"), prop("channel"), requiredProp("Channel"), prop("display-name"), prop("title"), prop("message"),
                         prop("icon"),
                         requiredProp("Custom"),
-                        prop("00ff00")
+                        prop("00ff00"),
+                        prop(null)
                 )
         );
         when(jsonUtil.responseAsJson(eq(200), any(Object.class))).thenReturn(new DefaultGoPluginApiResponse(200));
@@ -135,7 +138,8 @@ public class SlackTaskPluginTest {
                         requiredProp(""), prop("channel"), requiredProp(""), prop("display-name"), prop("title"), prop("message"),
                         prop("icon"),
                         requiredProp(""),
-                        prop("")
+                        prop(""),
+                        prop(null)
                 )
         );
         when(jsonUtil.responseAsJson(eq(200), any())).thenReturn(new DefaultGoPluginApiResponse(200));
@@ -185,6 +189,7 @@ public class SlackTaskPluginTest {
         expected.put("Title", field());
         expected.put("ColorType", requiredFieldWithDefaultValue("None"));
         expected.put("ChannelType", requiredFieldWithDefaultValue("Channel"));
+        expected.put("MarkdownInText", field());
 
         assertThat(config, is((HashMap)expected));
     }

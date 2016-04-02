@@ -11,6 +11,7 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsCollectionContaining.hasItem;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.hamcrest.core.IsNull.nullValue;
 
@@ -149,12 +150,23 @@ public class ConfigTest {
 
     }
 
+    @Test
+    public void testMarkdownIns_Text() {
+        Config config = configWithTextMarkdownIn();
+        assertThat(config.getMarkdownIns(), hasItem(MarkdownField.TEXT));
+        assertThat(config.getMarkdownIns().size(), is(1));
+    }
+
     private Config configWithColor(String colorType, String color) {
-        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(colorType), prop(color));
+        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(colorType), prop(color), prop(null));
     }
 
     private Config configWithChannel(String channelType, String channel) {
-        return new Config(prop(null), prop(channel), prop(channelType), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null));
+        return new Config(prop(null), prop(channel), prop(channelType), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null));
+    }
+
+    private Config configWithTextMarkdownIn() {
+        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop("true"));
     }
 
     private Property prop(String value) {
