@@ -2,8 +2,8 @@
 <go-plugin id="slack.task" version="1">
     <about>
         <name>Slack Task Plugin</name>
-        <version>1.3</version>
-        <target-go-version>15.1.0</target-go-version>
+        <version>${project.version}</version>
+        <target-go-version>${go.version}</target-go-version>
         <description>
            Task plugin that supports sending messages to Slack from Go jobs
         </description>
