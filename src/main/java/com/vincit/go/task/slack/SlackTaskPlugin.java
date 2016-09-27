@@ -99,7 +99,7 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
             TaskSlackDestination destination = new TaskSlackDestination(
                     webhookUrl,
                     config.getChannelType(),
-                    config.getChannel()
+                    messageFormatter.format(config.getChannel())
             );
 
             slackExecutorFactory.forDestination(destination).sendMessage(message);

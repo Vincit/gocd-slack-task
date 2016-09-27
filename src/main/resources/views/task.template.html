@@ -11,6 +11,7 @@
   <div class="path_textbox">
     <label ng-show="ChannelType == 'Channel'">#</label>
     <label ng-show="ChannelType == 'User'">@</label>
+    <label ng-show="ChannelType == 'Text'"></label>
     <input type="text" id="Channel" ng-model="Channel" ng-required="true">
     <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
       {{ GOINPUTNAME[Channel].$error.server }}
@@ -24,6 +25,8 @@
     <label for="channelTypeChannel">Channel</label>
     <input id="channelTypeUser" type="radio" ng-model="ChannelType" value="User">
     <label for="channelTypeUser">User</label>
+    <input id="channelTypeText" type="radio" ng-model="ChannelType" value="Text">
+    <label for="channelTypeText">Text</label>
   </div>
   <span class="form_error" ng-show="GOINPUTNAME[ChannelType].$error.server">
     {{ GOINPUTNAME[ChannelType].$error.server }}
