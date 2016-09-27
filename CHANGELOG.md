@@ -4,6 +4,9 @@ Changelog
 1.3
 ---
 
+ * All text fields support environment variables
+ * Add text as a channel type
+
 1.2
 ---
 
