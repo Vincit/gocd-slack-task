@@ -1,6 +1,6 @@
 package com.vincit.go.task.slack.model;
 
-import com.vincit.go.task.slack.utils.MessageFormatter;
+import com.vincit.go.task.slack.utils.EnvVarReplacer;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,14 +33,14 @@ public class PropertyTest {
     }
 
     @Test
-    public void testSubstitute() {
+    public void testReplace() {
         Property property = new Property("$value", false, false);
-        MessageFormatter formatter = new MessageFormatter();
-        formatter.add("value", "another");
+        EnvVarReplacer replacer = new EnvVarReplacer();
+        replacer.add("value", "another");
 
-        Property substitute = property.substitute(formatter);
+        Property replaced = property.replace(replacer);
 
-        assertThat(substitute.getValue(), is("another"));
+        assertThat(replaced.getValue(), is("another"));
     }
 
 }

@@ -9,20 +9,20 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.nullValue;
 
-public class MessageFormatterTest {
+public class EnvVarReplacerTest {
 
     @Test
     public void testReplace() {
         Map<String, String> envVars = new HashMap<>();
         envVars.put("WHAT", "World");
-        assertThat(new MessageFormatter(envVars).format("Hello $WHAT"), is("Hello World"));
+        assertThat(new EnvVarReplacer(envVars).replace("Hello $WHAT"), is("Hello World"));
     }
 
     @Test
     public void testReplaceNull() {
         Map<String, String> envVars = new HashMap<>();
         envVars.put("WHAT", "World");
-        assertThat(new MessageFormatter(envVars).format(null), nullValue());
+        assertThat(new EnvVarReplacer(envVars).replace(null), nullValue());
     }
 
     @Test
@@ -31,7 +31,7 @@ public class MessageFormatterTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(new MessageFormatter(envVars).format("$VAR_1 $VAR_2 $VAR_3"), is("Jee Joo Jaa"));
+        assertThat(new EnvVarReplacer(envVars).replace("$VAR_1 $VAR_2 $VAR_3"), is("Jee Joo Jaa"));
     }
 
     @Test
@@ -40,7 +40,7 @@ public class MessageFormatterTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(new MessageFormatter(envVars).format("$VAR_1 $$VAR_2 $VAR_3"), is("Jee $Joo Jaa"));
+        assertThat(new EnvVarReplacer(envVars).replace("$VAR_1 $$VAR_2 $VAR_3"), is("Jee $Joo Jaa"));
     }
 
     @Test
@@ -49,7 +49,7 @@ public class MessageFormatterTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(new MessageFormatter(envVars).format("$VAR_1 VAR_2 $VAR_3"), is("Jee VAR_2 Jaa"));
+        assertThat(new EnvVarReplacer(envVars).replace("$VAR_1 VAR_2 $VAR_3"), is("Jee VAR_2 Jaa"));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class MessageFormatterTest {
         envVars.put("VAR_1", "Jee");
         envVars.put("VAR_2", "Joo");
         envVars.put("VAR_3", "Jaa");
-        assertThat(new MessageFormatter(envVars).format("$VAR_1 \\$VAR_2 $VAR_3"), is("Jee $VAR_2 Jaa"));
+        assertThat(new EnvVarReplacer(envVars).replace("$VAR_1 \\$VAR_2 $VAR_3"), is("Jee $VAR_2 Jaa"));
     }
 
 }

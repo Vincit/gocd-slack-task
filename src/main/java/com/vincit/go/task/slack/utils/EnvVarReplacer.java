@@ -3,7 +3,7 @@ package com.vincit.go.task.slack.utils;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageFormatter {
+public class EnvVarReplacer {
 
     // Allows $, skips \$
     private static final String REGEX_PREFIX = "(?<!\\\\)\\$";
@@ -11,15 +11,15 @@ public class MessageFormatter {
 
     private Map<String, String> replacements;
 
-    public MessageFormatter() {
+    public EnvVarReplacer() {
         replacements = new HashMap<>();
     }
 
-    public MessageFormatter(Map<String, String> replacements) {
+    public EnvVarReplacer(Map<String, String> replacements) {
         this.replacements = replacements;
     }
 
-    public String format(String message) {
+    public String replace(String message) {
         if (message == null) {
             return null;
         }

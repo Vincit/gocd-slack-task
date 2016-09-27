@@ -1,6 +1,6 @@
 package com.vincit.go.task.slack.model;
 
-import com.vincit.go.task.slack.utils.MessageFormatter;
+import com.vincit.go.task.slack.utils.EnvVarReplacer;
 
 import java.util.Map;
 
@@ -61,9 +61,9 @@ public class Property {
         }
     }
 
-    public Property substitute(MessageFormatter messageFormatter) {
+    public Property replace(EnvVarReplacer envVarReplacer) {
         return new Property(
-                messageFormatter.format(this.value),
+                envVarReplacer.replace(this.value),
                 this.secure,
                 this.required
         );

@@ -31,7 +31,7 @@ import com.vincit.go.task.slack.model.Context;
 import com.vincit.go.task.slack.model.TaskConfig;
 import com.vincit.go.task.slack.utils.FileReader;
 import com.vincit.go.task.slack.utils.JsonUtil;
-import com.vincit.go.task.slack.utils.MessageFormatter;
+import com.vincit.go.task.slack.utils.EnvVarReplacer;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -83,10 +83,10 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
         Context context = executionRequest.getContext();
 
         try {
-            MessageFormatter messageFormatter = new MessageFormatter(context.getEnvironmentVariables());
+            EnvVarReplacer envVarReplacer = new EnvVarReplacer(context.getEnvironmentVariables());
 
             Config config = executionRequest.getConfig()
-                    .substitute(messageFormatter);
+                    .replace(envVarReplacer);
 
             String webhookUrl = config.getWebhookUrl();
 

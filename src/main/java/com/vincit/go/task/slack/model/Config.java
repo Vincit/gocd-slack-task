@@ -2,7 +2,7 @@ package com.vincit.go.task.slack.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.vincit.go.task.slack.config.ConfigProvider;
-import com.vincit.go.task.slack.utils.MessageFormatter;
+import com.vincit.go.task.slack.utils.EnvVarReplacer;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -171,17 +171,17 @@ public class Config {
         }
     }
 
-    public Config substitute(MessageFormatter messageFormatter) {
+    public Config replace(EnvVarReplacer envVarReplacer) {
         return new Config(
-                webhookUrl.substitute(messageFormatter),
-                channel.substitute(messageFormatter),
+                webhookUrl.replace(envVarReplacer),
+                channel.replace(envVarReplacer),
                 channelType,
-                displayName.substitute(messageFormatter),
-                title.substitute(messageFormatter),
-                message.substitute(messageFormatter),
-                iconOrEmoji.substitute(messageFormatter),
+                displayName.replace(envVarReplacer),
+                title.replace(envVarReplacer),
+                message.replace(envVarReplacer),
+                iconOrEmoji.replace(envVarReplacer),
                 colorType,
-                color.substitute(messageFormatter),
+                color.replace(envVarReplacer),
                 markdownInText
         );
     }

@@ -3,7 +3,7 @@ package com.vincit.go.task.slack.model;
 
 import com.vincit.go.task.slack.utils.FileReader;
 import com.vincit.go.task.slack.utils.JsonUtil;
-import com.vincit.go.task.slack.utils.MessageFormatter;
+import com.vincit.go.task.slack.utils.EnvVarReplacer;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -176,18 +176,18 @@ public class ConfigTest {
     }
 
     @Test
-    public void testSubstitution() throws IOException {
+    public void testReplace() throws IOException {
         TaskConfig taskConfig = new JsonUtil().fromJSON(
                 new FileReader().getFileContents("/json/task_config_env_var.json"),
                 TaskConfig.class
         );
 
-        MessageFormatter formatter = new MessageFormatter(
+        EnvVarReplacer replacer = new EnvVarReplacer(
                 taskConfig.getContext().getEnvironmentVariables()
         );
 
         Config config = taskConfig.getConfig()
-                .substitute(formatter);
+                .replace(replacer);
 
         assertThat(config.getWebhookUrl(), is("https://example.org/hook"));
         assertThat(config.getChannel(), is("Channel value"));
