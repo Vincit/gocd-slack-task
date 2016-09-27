@@ -3,8 +3,10 @@ package com.vincit.go.task.slack.model;
 
 import com.vincit.go.task.slack.utils.FileReader;
 import com.vincit.go.task.slack.utils.JsonUtil;
+import com.vincit.go.task.slack.utils.MessageFormatter;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,11 +91,27 @@ public class ConfigTest {
     }
 
     @Test
-    public void validateColorFormat() {
+    public void validateColorFormat_ColorCode() {
         Config config = configWithColor("Custom", "00ff00");
         Map<String, String> errors = config.validate();
 
         assertThat(errors.isEmpty(), is(true));
+    }
+
+    @Test
+    public void validateColorFormat_EnvVar() {
+        Config config = configWithColor("Custom", "$ABCXYZabcxyz_1237980");
+        Map<String, String> errors = config.validate();
+
+        assertThat(errors.isEmpty(), is(true));
+    }
+
+    @Test
+    public void validateInvalidColorFormat_EnvVar() {
+        Config config = configWithColor("Custom", "$ABCXYZab cxyz_1237980");
+        Map<String, String> errors = config.validate();
+
+        assertThat(errors.isEmpty(), is(false));
     }
 
     @Test
@@ -102,7 +120,7 @@ public class ConfigTest {
         Map<String, String> errors = config.validate();
 
         Map<String, String> expected = new HashMap<>();
-        expected.put("Color", "Color must be given as six hexadecimals (without # prefix)");
+        expected.put("Color", "Color must be given as six hexadecimals (without # prefix) or it must be an environment variable");
         assertThat(errors, is(expected));
     }
 
@@ -112,7 +130,7 @@ public class ConfigTest {
         Map<String, String> errors = config.validate();
 
         Map<String, String> expected = new HashMap<>();
-        expected.put("Color", "Color must be given as six hexadecimals (without # prefix)");
+        expected.put("Color", "Color must be given as six hexadecimals (without # prefix) or it must be an environment variable");
         assertThat(errors, is(expected));
     }
 
@@ -155,6 +173,31 @@ public class ConfigTest {
         Config config = configWithTextMarkdownIn();
         assertThat(config.getMarkdownIns(), hasItem(MarkdownField.TEXT));
         assertThat(config.getMarkdownIns().size(), is(1));
+    }
+
+    @Test
+    public void testSubstitution() throws IOException {
+        TaskConfig taskConfig = new JsonUtil().fromJSON(
+                new FileReader().getFileContents("/json/task_config_env_var.json"),
+                TaskConfig.class
+        );
+
+        MessageFormatter formatter = new MessageFormatter(
+                taskConfig.getContext().getEnvironmentVariables()
+        );
+
+        Config config = taskConfig.getConfig()
+                .substitute(formatter);
+
+        assertThat(config.getWebhookUrl(), is("https://example.org/hook"));
+        assertThat(config.getChannel(), is("Channel value"));
+        assertThat(config.getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(config.getDisplayName(), is("Display value"));
+        assertThat(config.getTitle(), is("Title value"));
+        assertThat(config.getMessage(), is("Message value"));
+        assertThat(config.getIconOrEmoji(), is("Emoji value"));
+        assertThat(config.getColorType(), is(ColorType.CUSTOM));
+        assertThat(config.getColor(), is("f00baa"));
     }
 
     private Config configWithColor(String colorType, String color) {

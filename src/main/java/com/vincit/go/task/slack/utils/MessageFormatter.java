@@ -1,5 +1,6 @@
 package com.vincit.go.task.slack.utils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class MessageFormatter {
@@ -9,6 +10,10 @@ public class MessageFormatter {
     private static final String ESCAPED_DOLLAR_REGEX = "\\\\\\$";
 
     private Map<String, String> replacements;
+
+    public MessageFormatter() {
+        replacements = new HashMap<>();
+    }
 
     public MessageFormatter(Map<String, String> replacements) {
         this.replacements = replacements;
@@ -24,6 +29,10 @@ public class MessageFormatter {
         }
 
         return message.replaceAll(ESCAPED_DOLLAR_REGEX, "\\$");
+    }
+
+    public void add(String key, String value) {
+        this.replacements.put(key, value);
     }
 
 }

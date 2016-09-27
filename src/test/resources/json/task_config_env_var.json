@@ -1,0 +1,60 @@
+{
+  "config": {
+    "Message": {
+      "secure": false,
+      "required": false,
+      "value": "$message"
+    },
+    "Title": {
+      "secure": false,
+      "required": false,
+      "value": "$title"
+    },
+    "IconOrEmoji": {
+      "secure": false,
+      "required": false,
+      "value": "$emoji"
+    },
+    "Channel": {
+      "secure": false,
+      "required": false,
+      "value": "$channel"
+    },
+    "ChannelType": {
+      "secure": false,
+      "required": false,
+      "value": "Channel"
+    },
+    "WebhookUrl": {
+      "secure": false,
+      "required": false,
+      "value": "$webhookUrl"
+    },
+    "DisplayName": {
+      "secure": false,
+      "required": false,
+      "value": "$displayName"
+    },
+    "ColorType": {
+      "secure": false,
+      "required": false,
+      "value": "Custom"
+    },
+    "Color": {
+      "secure": false,
+      "required": false,
+      "value": "$color"
+    }
+  },
+  "context": {
+    "environmentVariables": {
+      "message": "Message value",
+      "channel": "Channel value",
+      "emoji": "Emoji value",
+      "displayName": "Display value",
+      "title": "Title value",
+      "webhookUrl": "https://example.org/hook",
+      "color": "f00baa"
+    }
+  }
+}

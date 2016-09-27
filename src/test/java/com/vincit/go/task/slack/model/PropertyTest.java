@@ -1,5 +1,6 @@
 package com.vincit.go.task.slack.model;
 
+import com.vincit.go.task.slack.utils.MessageFormatter;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,6 +30,17 @@ public class PropertyTest {
     public void testRequiredGetValueOr_Empty() {
         Property property = new Property("", false, true);
         assertThat(property.getValueOr("Value"), is("Value"));
+    }
+
+    @Test
+    public void testSubstitute() {
+        Property property = new Property("$value", false, false);
+        MessageFormatter formatter = new MessageFormatter();
+        formatter.add("value", "another");
+
+        Property substitute = property.substitute(formatter);
+
+        assertThat(substitute.getValue(), is("another"));
     }
 
 }

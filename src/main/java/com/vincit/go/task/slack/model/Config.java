@@ -2,13 +2,18 @@ package com.vincit.go.task.slack.model;
 
 import com.google.gson.annotations.SerializedName;
 import com.vincit.go.task.slack.config.ConfigProvider;
+import com.vincit.go.task.slack.utils.MessageFormatter;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 public class Config {
+
+    private static final Pattern ENV_VAR_PATTERN = Pattern.compile("\\$[\\w0-9_]+");
+    private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("[a-fA-F0-9]{6}");
 
     @SerializedName("Message")
     private Property message;
@@ -134,8 +139,11 @@ public class Config {
         color.validate(ConfigProvider.COLOR, "Color is required", errors);
 
         if (color.isPresent()) {
-            if (!color.getValue().matches("[a-fA-F0-9]{6}")) {
-                errors.put(ConfigProvider.COLOR, "Color must be given as six hexadecimals (without # prefix)");
+            boolean isEnvVar = ENV_VAR_PATTERN.matcher(color.getValue()).matches();
+            boolean isColorCode = COLOR_CODE_PATTERN.matcher(color.getValue()).matches();
+
+            if (!isColorCode && !isEnvVar) {
+                errors.put(ConfigProvider.COLOR, "Color must be given as six hexadecimals (without # prefix) or it must be an environment variable");
             }
         }
 
@@ -161,5 +169,20 @@ public class Config {
         if (property != null && property.isPresent() && Boolean.valueOf(property.getValueOr("false"))) {
             ins.add(field);
         }
+    }
+
+    public Config substitute(MessageFormatter messageFormatter) {
+        return new Config(
+                webhookUrl.substitute(messageFormatter),
+                channel.substitute(messageFormatter),
+                channelType,
+                displayName.substitute(messageFormatter),
+                title.substitute(messageFormatter),
+                message.substitute(messageFormatter),
+                iconOrEmoji.substitute(messageFormatter),
+                colorType,
+                color.substitute(messageFormatter),
+                markdownInText
+        );
     }
 }

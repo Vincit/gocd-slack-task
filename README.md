@@ -33,16 +33,9 @@ Configuration
 GoCD parameters (`#{paramName}`) work on all text fields as this is the default
 behaviour fo GoCD.
 
-Environment variables can be referenced in certain fields using the dollar symbol: `$ENV_VAR_NAME`.
+Environment variables can be referenced in all text fields using the dollar symbol: `$ENV_VAR_NAME`.
 The plugin currently only supports adding the environment variables as is.
 Normal Bash string manipulation is not supported.
-
-Fields that support environment variable substitution:
-
- * display name
- * title
- * message
- * channel
 
 ### Message formatting
 

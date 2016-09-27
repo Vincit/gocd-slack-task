@@ -1,5 +1,7 @@
 package com.vincit.go.task.slack.model;
 
+import com.vincit.go.task.slack.utils.MessageFormatter;
+
 import java.util.Map;
 
 public class Property {
@@ -57,5 +59,13 @@ public class Property {
         if (!isValid()) {
             errors.put(fieldName, messageIfNotPreset);
         }
+    }
+
+    public Property substitute(MessageFormatter messageFormatter) {
+        return new Property(
+                messageFormatter.format(this.value),
+                this.secure,
+                this.required
+        );
     }
 }

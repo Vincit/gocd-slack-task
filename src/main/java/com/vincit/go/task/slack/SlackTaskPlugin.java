@@ -80,17 +80,20 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
     protected GoPluginApiResponse handleTaskExecution(GoPluginApiRequest request) {
 
         TaskConfig executionRequest = jsonUtil.fromJSON(request.requestBody(), TaskConfig.class);
-        Config config = executionRequest.getConfig();
         Context context = executionRequest.getContext();
 
         try {
-            String webhookUrl = config.getWebhookUrl();
             MessageFormatter messageFormatter = new MessageFormatter(context.getEnvironmentVariables());
 
+            Config config = executionRequest.getConfig()
+                    .substitute(messageFormatter);
+
+            String webhookUrl = config.getWebhookUrl();
+
             TaskSlackMessage message = new TaskSlackMessage(
-                    messageFormatter.format(config.getDisplayName()),
-                    messageFormatter.format(config.getTitle()),
-                    messageFormatter.format(config.getMessage()),
+                    config.getDisplayName(),
+                    config.getTitle(),
+                    config.getMessage(),
                     config.getIconOrEmoji(),
                     config.getColor(),
                     config.getMarkdownIns()
@@ -99,7 +102,7 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
             TaskSlackDestination destination = new TaskSlackDestination(
                     webhookUrl,
                     config.getChannelType(),
-                    messageFormatter.format(config.getChannel())
+                    config.getChannel()
             );
 
             slackExecutorFactory.forDestination(destination).sendMessage(message);
