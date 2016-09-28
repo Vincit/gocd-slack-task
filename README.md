@@ -18,7 +18,7 @@ Configuration
 |Parameter|Description|Required|
 |---------|-----------|--------|
 |Webhook URL|Slack webhook URL|Yes|
-|Channel|Channel to post. Channel type prefix (`#` or `@`) is only required if channel type is `text`.|Yes|
+|Channel|Channel to post. Channel type prefix (`#` or `@`) is only required if the channel type is `text`.|Yes|
 |Channel type|Type of the channel (`channel`, `user` or `text`).|Yes|
 |Display name|Sender name (e.g. Go CD)|Yes|
 |Title|Message title (e.g. Deployed to production)|Yes|
