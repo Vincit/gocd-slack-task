@@ -26,7 +26,7 @@ Configuration
 |Message: Slack message formatting|Enable Slack message formatting for the message|No|
 |Icon or Emoji|Icon URL or Slack emoji (e.g. `https://example.org/icon.png` or `:tada:`)|No|
 |Color|Pre-defined colors|Yes|
-|Custom color|Custom color as a six hex digit code without `#` (e.g. `ff0000` for red). Only when custom color is selected as the color.|No|
+|Custom color|Custom color as a three or six hex digit code without `#` (e.g. `ff0000` for red).|If using custom color|
 
 ### Environment variables and parameters
 

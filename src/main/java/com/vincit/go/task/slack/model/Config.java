@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class Config {
 
     private static final Pattern ENV_VAR_PATTERN = Pattern.compile("\\$[\\w0-9_]+");
-    private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("[a-fA-F0-9]{6}");
+    private static final Pattern COLOR_CODE_PATTERN = Pattern.compile("[a-fA-F0-9]{3}|[a-fA-F0-9]{6}");
 
     @SerializedName("Message")
     private Property message;
@@ -143,7 +143,7 @@ public class Config {
             boolean isColorCode = COLOR_CODE_PATTERN.matcher(color.getValue()).matches();
 
             if (!isColorCode && !isEnvVar) {
-                errors.put(ConfigProvider.COLOR, "Color must be given as six hexadecimals (without # prefix) or it must be an environment variable");
+                errors.put(ConfigProvider.COLOR, "Color must be given as three/six hexadecimals (without # prefix) or it must be an environment variable");
             }
         }
 

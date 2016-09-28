@@ -6,6 +6,7 @@ Changelog
 
  * All text fields support environment variables
  * Add text as a channel type
+ * Add support for three digit hex color codes
 
 1.2
 ---

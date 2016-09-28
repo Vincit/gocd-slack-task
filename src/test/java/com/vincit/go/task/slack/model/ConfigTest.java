@@ -19,6 +19,8 @@ import static org.hamcrest.core.IsNull.nullValue;
 
 public class ConfigTest {
 
+    public static final String COLOR_CODE_ERROR_MESSAGE = "Color must be given as three/six hexadecimals (without # prefix) or it must be an environment variable";
+
     @Test
     public void testCustomColor() {
         assertThat(configWithColor("Custom", "F00F00").getColor(), is("F00F00"));
@@ -99,6 +101,14 @@ public class ConfigTest {
     }
 
     @Test
+    public void validateColorFormat_ShortColorCode() {
+        Config config = configWithColor("Custom", "f00");
+        Map<String, String> errors = config.validate();
+
+        assertThat(errors.isEmpty(), is(true));
+    }
+
+    @Test
     public void validateColorFormat_EnvVar() {
         Config config = configWithColor("Custom", "$ABCXYZabcxyz_1237980");
         Map<String, String> errors = config.validate();
@@ -120,7 +130,7 @@ public class ConfigTest {
         Map<String, String> errors = config.validate();
 
         Map<String, String> expected = new HashMap<>();
-        expected.put("Color", "Color must be given as six hexadecimals (without # prefix) or it must be an environment variable");
+        expected.put("Color", COLOR_CODE_ERROR_MESSAGE);
         assertThat(errors, is(expected));
     }
 
@@ -130,7 +140,37 @@ public class ConfigTest {
         Map<String, String> errors = config.validate();
 
         Map<String, String> expected = new HashMap<>();
-        expected.put("Color", "Color must be given as six hexadecimals (without # prefix) or it must be an environment variable");
+        expected.put("Color", COLOR_CODE_ERROR_MESSAGE);
+        assertThat(errors, is(expected));
+    }
+
+    @Test
+    public void validateInvalidColorFormat_InvalidLengthShort() {
+        Config config = configWithColor("Custom", "00");
+        Map<String, String> errors = config.validate();
+
+        Map<String, String> expected = new HashMap<>();
+        expected.put("Color", COLOR_CODE_ERROR_MESSAGE);
+        assertThat(errors, is(expected));
+    }
+
+    @Test
+    public void validateInvalidColorFormat_InvalidLengthMiddle() {
+        Config config = configWithColor("Custom", "00ff");
+        Map<String, String> errors = config.validate();
+
+        Map<String, String> expected = new HashMap<>();
+        expected.put("Color", COLOR_CODE_ERROR_MESSAGE);
+        assertThat(errors, is(expected));
+    }
+
+    @Test
+    public void validateInvalidColorFormat_InvalidLengthLong() {
+        Config config = configWithColor("Custom", "00ff00f");
+        Map<String, String> errors = config.validate();
+
+        Map<String, String> expected = new HashMap<>();
+        expected.put("Color", COLOR_CODE_ERROR_MESSAGE);
         assertThat(errors, is(expected));
     }
 
