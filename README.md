@@ -19,25 +19,25 @@ Configuration
 |---------|-----------|--------|
 |Webhook URL|Slack webhook URL|Yes|
 |Channel|Channel to post. Channel type prefix (`#` or `@`) is only required if the channel type is `text`.|Yes|
-|Channel type|Type of the channel (`channel`, `user` or `text`).|Yes|
-|Display name|Sender name (e.g. Go CD)|Yes|
-|Title|Message title (e.g. Deployed to production)|Yes|
-|Message|Actual message|No|
-|Message: Slack message formatting|Enable Slack message formatting for the message|No|
-|Icon or Emoji|Icon URL or Slack emoji (e.g. `https://example.org/icon.png` or `:tada:`)|No|
-|Color|Pre-defined colors|Yes|
-|Custom color|Custom color as a three or six hex digit code without `#` (e.g. `ff0000` for red).|If using custom color|
+|Channel type|The type of channel (`channel`, `user` or `text`).|Yes|
+|Display name|Sender's name (e.g. - Go CD)|Yes|
+|Title|Title or subject header of the message (e.g. - Deployed to production)|Yes|
+|Message|The actual message|No|
+|Message: Slack message formatting|Enables Slack message formatting for the message|No|
+|Icon or Emoji|The icon URL or Slack emoji (e.g. - `https://example.org/icon.png` or `:tada:`)|No|
+|Color|The color label for the message displayed as a bar on the side. Select `custom` to define any color|Yes|
+|Custom color|Defines a custom color as a three or six-hex digit code without `#` (e.g. - `ff0000` for red).|If using custom color|
 
-### Environment variables and parameters
+### Environment Variables and Parameters
 
 GoCD parameters (`#{paramName}`) work on all text fields as this is the default
-behaviour fo GoCD.
+behaviour for GoCD.
 
-Environment variables can be referenced in all text fields using the dollar symbol: `$ENV_VAR_NAME`.
+Environment variables can be referenced in all text fields using the dollar symbol (e.g. - `$ENV_VAR_NAME`).
 The plugin currently only supports adding the environment variables as is. Escaping the dollar symbol
-works with backslash: `\$ThisIsNotReplaced`. Normal Bash string manipulation is not supported.
+works with backslash (e.g. - `\$ThisIsNotReplaced`). Normal Bash string manipulation is not supported.
 
-### Message formatting
+### Message Formatting
 
 It is possible to format the message using [Slack's message formatting options](https://get.slack.help/hc/en-us/articles/202288908-How-can-I-add-formatting-to-my-messages-).
 Formatting can be enabled for the message via the _Slack message formatting_ checkbox under
