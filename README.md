@@ -11,6 +11,11 @@ Installation
  1. Download latest plugin JAR from [releases](https://github.com/Vincit/gocd-slack-task/releases)
  2. Place the JAR to GoCD's external plugin directory (`<go-server-location>/plugins/external`)
  3. Restart GoCD server
+ 
+Usage
+------------
+
+Create a new Slack task in any job to send your custom Slack message.
 
 Configuration
 -------------
