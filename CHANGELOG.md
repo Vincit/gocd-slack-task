@@ -1,6 +1,8 @@
 Changelog
 ===========
 
+ * Show exception message in GoCD plugin error message if sending message to Slack fails
+
 1.3
 ---
 
