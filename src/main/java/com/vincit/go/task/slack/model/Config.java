@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import com.vincit.go.task.slack.config.ConfigProvider;
 import com.vincit.go.task.slack.utils.EnvVarReplacer;
 
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
