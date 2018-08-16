@@ -22,6 +22,7 @@ public class ConfigProvider {
     public static final String COLOR = "Color";
     public static final String COLOR_TYPE = "ColorType";
     public static final String MARKDOWN_IN_TEXT = "MarkdownInText";
+    public static final String FAIL_ON_ERROR = "FailOnError";
 
     private static Map<String, HashMap<String, Object>> fieldConfig = new HashMap<>();
 
@@ -36,6 +37,7 @@ public class ConfigProvider {
         fieldConfig.put(COLOR_TYPE, createField(ColorType.NONE.getDisplayValue(), Secure.NO, Required.YES));
         fieldConfig.put(COLOR, createField("", Secure.NO, Required.NO));
         fieldConfig.put(MARKDOWN_IN_TEXT, createField("", Secure.NO, Required.NO));
+        fieldConfig.put(FAIL_ON_ERROR, createField("", Secure.NO, Required.NO));
     }
 
     public static Map<String, ?> getFieldConfig() {

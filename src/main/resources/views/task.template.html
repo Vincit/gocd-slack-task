@@ -96,6 +96,21 @@
   </span>
 </div>
 <div class="form_item_block">
+  <div class="checkbox_row">
+    <input id="failOnError" type="checkbox" ng-model="cbFailOnError"
+           ng-init="cbFailOnError = FailOnError"
+           ng-change="FailOnError = cbFailOnError"
+           ng-true-value="true" ng-false-value="false">
+    <input type="hidden" value="{{FailOnError}}" ng-model="FailOnError">
+    <label for="failOnError">
+      Fail the build if an error occurred while messaging slack.
+    </label>
+  </div>
+  <span class="form_error" ng-show="GOINPUTNAME[FailOnError].$error.server">
+    {{ GOINPUTNAME[FailOnError].$error.server }}
+  </span>
+</div>
+<div class="form_item_block">
   <label for="Color">Custom Color<span class="asterisk" ng-show="ColorType == 'Custom'">*</span></label>
   <div class="path_textbox">
     <label for="Color">#</label><input type="text" id="Color" ng-model="Color" ng-disabled="ColorType != 'Custom'">

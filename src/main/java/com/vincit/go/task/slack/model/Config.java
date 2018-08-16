@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import com.vincit.go.task.slack.config.ConfigProvider;
 import com.vincit.go.task.slack.utils.EnvVarReplacer;
 
+import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,11 +36,15 @@ public class Config {
     private Property color;
     @SerializedName("MarkdownInText")
     private Property markdownInText;
+    @SerializedName("FailOnError")
+    private Property failOnError;
 
     public Config() {
     }
 
-    public Config(Property webhookUrl, Property channel, Property channelType, Property displayName, Property title, Property message, Property iconOrEmoji, Property colorType, Property color, Property markdownInText) {
+    public Config(Property webhookUrl, Property channel, Property channelType, Property displayName, Property title,
+                  Property message, Property iconOrEmoji, Property colorType, Property color, Property markdownInText,
+                  Property failOnError) {
         this.message = message;
         this.title = title;
         this.iconOrEmoji = iconOrEmoji;
@@ -50,6 +55,7 @@ public class Config {
         this.colorType = colorType;
         this.color = color;
         this.markdownInText = markdownInText;
+        this.failOnError = failOnError;
     }
 
     private String getValueOr(Property property, String value) {
@@ -165,6 +171,10 @@ public class Config {
         return markdownIns;
     }
 
+    public String getFailOnError() {
+        return getValueOr(failOnError, "");
+    }
+
     private void addFieldIfSet(Property property, MarkdownField field, Set<MarkdownField> ins) {
         if (property != null && property.isPresent() && Boolean.valueOf(property.getValueOr("false"))) {
             ins.add(field);
@@ -182,7 +192,8 @@ public class Config {
                 iconOrEmoji.replace(envVarReplacer),
                 colorType,
                 color.replace(envVarReplacer),
-                markdownInText
+                markdownInText,
+                failOnError
         );
     }
 }

@@ -241,15 +241,15 @@ public class ConfigTest {
     }
 
     private Config configWithColor(String colorType, String color) {
-        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(colorType), prop(color), prop(null));
+        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(colorType), prop(color), prop(null), prop(null));
     }
 
     private Config configWithChannel(String channelType, String channel) {
-        return new Config(prop(null), prop(channel), prop(channelType), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null));
+        return new Config(prop(null), prop(channel), prop(channelType), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null));
     }
 
     private Config configWithTextMarkdownIn() {
-        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop("true"));
+        return new Config(prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop(null), prop("true"), prop(null));
     }
 
     private Property prop(String value) {
