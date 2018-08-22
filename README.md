@@ -32,6 +32,7 @@ Configuration
 |Icon or Emoji|The icon URL or Slack emoji (e.g. - `https://example.org/icon.png` or `:tada:`)|No|
 |Color|The color label for the message displayed as a bar on the side. Select `custom` to define any color|Yes|
 |Custom color|Defines a custom color as a three or six-hex digit code without `#` (e.g. - `ff0000` for red).|If using custom color|
+|Fail on error|Whether the build should fail if an issue occurs when contacting Slack|No|
 
 ### Environment Variables and Parameters
 

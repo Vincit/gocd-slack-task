@@ -15,9 +15,11 @@ import com.vincit.go.task.slack.utils.JsonUtil;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static junit.framework.TestCase.fail;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.any;
@@ -40,10 +42,15 @@ public class SlackTaskPluginTest {
         }
     }
 
-    private MockSlackContainer mockSlack() {
+    private MockSlackContainer mockSlack(boolean fail) throws Exception {
         SlackExecutorFactory slackExecutorFactory = mock(SlackExecutorFactory.class);
         SlackExecutor slackExecutor = mock(SlackExecutor.class);
         ArgumentCaptor<TaskSlackDestination> destinationCaptor = ArgumentCaptor.forClass(TaskSlackDestination.class);
+
+        if(fail) {
+            doThrow(new IOException("500 Server Error fatal_error")).when(slackExecutor).sendMessage(isA(TaskSlackMessage.class));
+        }
+
         when(slackExecutorFactory.forDestination(destinationCaptor.capture())).thenReturn(slackExecutor);
 
         return new MockSlackContainer(
@@ -64,7 +71,8 @@ public class SlackTaskPluginTest {
                                 prop("icon"),
                                 prop("CUSTOM"),
                                 prop("00ff00"),
-                                prop(null)
+                                prop(null),
+                                prop("false")
                         ),
                         new Context(new HashMap<String, String>())
                 )
@@ -72,7 +80,7 @@ public class SlackTaskPluginTest {
         when(jsonUtil.responseAsJson(eq(200), anyMap())).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
-        MockSlackContainer slack = mockSlack();
+        MockSlackContainer slack = mockSlack(false);
 
         SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
@@ -108,13 +116,14 @@ public class SlackTaskPluginTest {
                         prop("icon"),
                         requiredProp("Custom"),
                         prop("00ff00"),
-                        prop(null)
+                        prop(null),
+                        prop("false")
                 )
         );
         when(jsonUtil.responseAsJson(eq(200), any(Object.class))).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
-        MockSlackContainer slack = mockSlack();
+        MockSlackContainer slack = mockSlack(false);
 
         SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
@@ -139,13 +148,14 @@ public class SlackTaskPluginTest {
                         prop("icon"),
                         requiredProp(""),
                         prop(""),
-                        prop(null)
+                        prop(null),
+                        prop("false")
                 )
         );
         when(jsonUtil.responseAsJson(eq(200), any())).thenReturn(new DefaultGoPluginApiResponse(200));
 
         FileReader fileReader = mock(FileReader.class);
-        MockSlackContainer slack = mockSlack();
+        MockSlackContainer slack = mockSlack(false);
 
         SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
@@ -169,7 +179,7 @@ public class SlackTaskPluginTest {
         JsonUtil jsonUtil = new JsonUtil();
 
         FileReader fileReader = mock(FileReader.class);
-        MockSlackContainer slack = mockSlack();
+        MockSlackContainer slack = mockSlack(false);
 
         SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
 
@@ -190,8 +200,42 @@ public class SlackTaskPluginTest {
         expected.put("ColorType", requiredFieldWithDefaultValue("None"));
         expected.put("ChannelType", requiredFieldWithDefaultValue("Channel"));
         expected.put("MarkdownInText", field());
+        expected.put("FailOnError", field());
 
         assertThat(config, is((HashMap)expected));
+    }
+
+    @Test
+    public void testHandleFailedSlackMessage() throws Exception {
+        JsonUtil jsonUtil = mock(JsonUtil.class);
+        when(jsonUtil.fromJSON("test-request", TaskConfig.class)).thenReturn(
+                new TaskConfig(
+                        new Config(
+                                prop("webhook"), prop("channel"), prop("CHANNEL"), prop("display-name"), prop("title"), prop("message"),
+                                prop("icon"),
+                                prop("CUSTOM"),
+                                prop("00ff00"),
+                                prop(null),
+                                prop("false")
+                        ),
+                        new Context(new HashMap<String, String>())
+                )
+        );
+        when(jsonUtil.responseAsJson(eq(200), anyMap())).thenReturn(new DefaultGoPluginApiResponse(200));
+
+        FileReader fileReader = mock(FileReader.class);
+        MockSlackContainer slack = mockSlack(true);
+
+        SlackTaskPlugin plugin = new SlackTaskPlugin(jsonUtil, fileReader, slack.slackExecutorFactory);
+
+        DefaultGoPluginApiRequest request = new DefaultGoPluginApiRequest("task", "1.0", "execute");
+        request.setRequestBody("test-request");
+
+        try {
+            GoPluginApiResponse response = plugin.handle(request);
+        } catch(RuntimeException ex) {
+            fail("Slack error blocks task!");
+        }
     }
 
     private static Property prop(String value) {

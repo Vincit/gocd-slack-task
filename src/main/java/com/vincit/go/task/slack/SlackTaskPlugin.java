@@ -82,32 +82,38 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
         TaskConfig executionRequest = jsonUtil.fromJSON(request.requestBody(), TaskConfig.class);
         Context context = executionRequest.getContext();
 
+        EnvVarReplacer envVarReplacer = new EnvVarReplacer(context.getEnvironmentVariables());
+
+        Config config = executionRequest.getConfig()
+                .replace(envVarReplacer);
+
+        String webhookUrl = config.getWebhookUrl();
+
+        TaskSlackMessage message = new TaskSlackMessage(
+                config.getDisplayName(),
+                config.getTitle(),
+                config.getMessage(),
+                config.getIconOrEmoji(),
+                config.getColor(),
+                config.getMarkdownIns()
+        );
+
+        TaskSlackDestination destination = new TaskSlackDestination(
+                webhookUrl,
+                config.getChannelType(),
+                config.getChannel()
+        );
+
         try {
-            EnvVarReplacer envVarReplacer = new EnvVarReplacer(context.getEnvironmentVariables());
-
-            Config config = executionRequest.getConfig()
-                    .replace(envVarReplacer);
-
-            String webhookUrl = config.getWebhookUrl();
-
-            TaskSlackMessage message = new TaskSlackMessage(
-                    config.getDisplayName(),
-                    config.getTitle(),
-                    config.getMessage(),
-                    config.getIconOrEmoji(),
-                    config.getColor(),
-                    config.getMarkdownIns()
-            );
-
-            TaskSlackDestination destination = new TaskSlackDestination(
-                    webhookUrl,
-                    config.getChannelType(),
-                    config.getChannel()
-            );
 
             slackExecutorFactory.forDestination(destination).sendMessage(message);
+
         } catch (IOException e) {
-            throw new RuntimeException("Could not send message to slack: " + e.getMessage(), e);
+            if(config.getFailOnError().equals("true")) {
+                throw new RuntimeException("Could not send message to slack: " + e.getMessage(), e);
+            } else {
+                logger.error("Could not send message to slack: " + e.getMessage());
+            }
         }
 
         Map<String, Object> result = new HashMap<>();
