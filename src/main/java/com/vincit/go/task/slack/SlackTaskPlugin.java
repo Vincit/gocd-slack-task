@@ -110,7 +110,7 @@ public class SlackTaskPlugin extends AbstractTaskPlugin {
 
         } catch (IOException e) {
             if(config.getFailOnError().equals("true")) {
-                throw new RuntimeException("Could not send message to slack", e);
+                throw new RuntimeException("Could not send message to slack: " + e.getMessage(), e);
             } else {
                 logger.error("Could not send message to slack: " + e.getMessage());
             }
