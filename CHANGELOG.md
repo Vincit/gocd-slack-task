@@ -4,6 +4,10 @@ Changelog
 1.4
 ---
 
+ * Add toggle to allow build to pass even if slack api is down
+ 
+ Thanks `DonoA` for the contribution
+
 1.3.1
 -----
 
