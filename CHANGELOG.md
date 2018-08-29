@@ -4,10 +4,16 @@ Changelog
 1.4
 ---
 
- * Add toggle to allow build to pass even if slack api is down
- 
+ * Add toggle to allow build to pass even if Slack API is down
+   
  Thanks `DonoA` for the contribution
 
+#### Changed Behaviour
+
+ Previously this plugin failed the build if the Slack API was down or unreachable. The default
+ behaviour has been changed so that the build is not failed anymore. This can still be turned on
+ from the task settings if this is still the desired behaviour.
+ 
 1.3.1
 -----
 
