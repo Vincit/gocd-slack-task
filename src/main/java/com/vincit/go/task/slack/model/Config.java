@@ -195,4 +195,24 @@ public class Config {
                 failOnError
         );
     }
+
+    public Config or(Config defaultConfig) {
+        if (defaultConfig == null) {
+            return this;
+        } else {
+            return new Config(
+                    webhookUrl.or(defaultConfig.webhookUrl),
+                    channel.or(defaultConfig.channel),
+                    channelType.or(defaultConfig.channelType),
+                    displayName.or(defaultConfig.displayName),
+                    title.or(defaultConfig.title),
+                    message.or(defaultConfig.message),
+                    iconOrEmoji.or(defaultConfig.iconOrEmoji),
+                    colorType.or(defaultConfig.colorType),
+                    color.or(defaultConfig.color),
+                    markdownInText,
+                    failOnError
+            );
+        }
+    }
 }

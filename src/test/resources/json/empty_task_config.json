@@ -1,0 +1,49 @@
+{
+  "config": {
+    "Message": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "Title": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "IconOrEmoji": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "Channel": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "ChannelType": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "WebhookUrl": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "DisplayName": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "ColorType": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    },
+    "Color": {
+      "secure": false,
+      "required": false,
+      "value": ""
+    }
+  }
+}

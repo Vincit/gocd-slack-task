@@ -68,4 +68,12 @@ public class Property {
                 this.required
         );
     }
+
+    public Property or(Property defaultValue) {
+        if (isPresent()) {
+            return this;
+        } else {
+            return defaultValue;
+        }
+    }
 }

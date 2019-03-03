@@ -205,7 +205,35 @@ public class ConfigTest {
         assertThat(taskConfig.getContext(), notNullValue());
         assertThat(taskConfig.getContext().getEnvironmentVariables(), hasKey("VAR1"));
         assertThat(taskConfig.getContext().getEnvironmentVariables(), hasKey("VAR2"));
+    }
+    
+    @Test
+    public void orDefaultConfig() throws Exception {
+        TaskConfig emptyConfig = new JsonUtil().fromJSON(
+                new FileReader().getFileContents("/json/empty_task_config.json"),
+                TaskConfig.class
+        );
+        TaskConfig defaultConfig = new JsonUtil().fromJSON(
+                new FileReader().getFileContents("/json/task_config.json"),
+                TaskConfig.class
+        );
 
+        final Config config = emptyConfig.getConfig().or(defaultConfig.getConfig());
+        
+        assertThat(config, notNullValue());
+        assertThat(config.getWebhookUrl(), is("https://example.org"));
+        assertThat(config.getChannel(), is("channel"));
+        assertThat(config.getChannelType(), is(ChannelType.CHANNEL));
+        assertThat(config.getDisplayName(), is("display-name"));
+        assertThat(config.getTitle(), is("title"));
+        assertThat(config.getMessage(), is("message"));
+        assertThat(config.getIconOrEmoji(), is(":tada:"));
+        assertThat(config.getColorType(), is(ColorType.CUSTOM));
+        assertThat(config.getColor(), is("f00f00"));
+
+        assertThat(defaultConfig.getContext(), notNullValue());
+        assertThat(defaultConfig.getContext().getEnvironmentVariables(), hasKey("VAR1"));
+        assertThat(defaultConfig.getContext().getEnvironmentVariables(), hasKey("VAR2"));
     }
 
     @Test
