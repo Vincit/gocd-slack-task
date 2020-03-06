@@ -1,122 +1,145 @@
+<style>
+  .asterisk {
+    color : red;
+  }
+  .input-box {
+    width : 270px !important;
+    height : 37px !important;
+  }
+  .checkbox_row{
+    display:flex !important;
+  }
+  .slack_msg{
+    line-height : 1 !important;
+    margin-left : 5px !important;
+  }
+  .checkbox_row label {
+    line-height :1;
+  }
+  .custom_color {
+    background: #e5e5e5;
+  }
+</style>
+
 <div class="form_item_block">
-  <label for="WebhookUrl">Webhook URL<span class="asterisk">*</span></label>
-  <input type="text" id="WebhookUrl" ng-model="WebhookUrl" ng-required="true">
-  </input>
-  <span class="form_error" ng-show="GOINPUTNAME[WebhookUrl].$error.server">
+    <label for="WebhookUrl">Webhook URL<span class="asterisk">*</span></label>
+    <input type="text" id="WebhookUrl" ng-model="WebhookUrl" ng-required="true" class="input-box">
+    <span class="form_error" ng-show="GOINPUTNAME[WebhookUrl].$error.server">
     {{ GOINPUTNAME[WebhookUrl].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label for="Channel">Channel<span class="asterisk">*</span></label>
-  <div class="path_textbox">
-    <label ng-show="ChannelType == 'Channel'">#</label>
-    <label ng-show="ChannelType == 'User'">@</label>
-    <label ng-show="ChannelType == 'Text'"></label>
-    <input type="text" id="Channel" ng-model="Channel" ng-required="true">
-    <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
+    <label for="Channel">Channel<span class="asterisk">*</span></label>
+    <div class="path_textbox">
+        <label ng-show="ChannelType == 'Channel'" class="custom_color">#</label>
+        <label ng-show="ChannelType == 'User'" class="custom_color">@</label>
+        <label ng-show="ChannelType == 'Text'"></label>
+        <input type="text" id="Channel" ng-model="Channel" ng-required="true" class="input-box">
+        <span class="form_error" ng-show="GOINPUTNAME[Channel].$error.server">
       {{ GOINPUTNAME[Channel].$error.server }}
     </span>
-  </div>
+    </div>
 </div>
 <div class="form_item_block">
-  <label>Channel Type<span class="asterisk">*</span></label>
-  <div class="checkbox_row">
-    <input id="channelTypeChannel" type="radio" ng-model="ChannelType" value="Channel">
-    <label for="channelTypeChannel">Channel</label>
-    <input id="channelTypeUser" type="radio" ng-model="ChannelType" value="User">
-    <label for="channelTypeUser">User</label>
-    <input id="channelTypeText" type="radio" ng-model="ChannelType" value="Text">
-    <label for="channelTypeText">Text</label>
-  </div>
-  <span class="form_error" ng-show="GOINPUTNAME[ChannelType].$error.server">
+    <label>Channel Type<span class="asterisk">*</span></label>
+    <div class="checkbox_row">
+        <input id="channelTypeChannel" type="radio" ng-model="ChannelType" value="Channel">
+        <label for="channelTypeChannel">Channel</label>
+        <input id="channelTypeUser" type="radio" ng-model="ChannelType" value="User">
+        <label for="channelTypeUser">User</label>
+        <input id="channelTypeText" type="radio" ng-model="ChannelType" value="Text">
+        <label for="channelTypeText">Text</label>
+    </div>
+    <span class="form_error" ng-show="GOINPUTNAME[ChannelType].$error.server">
     {{ GOINPUTNAME[ChannelType].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label for="DisplayName">Display Name</label>
-  <input type="text" id="DisplayName" ng-model="DisplayName" ng-required="false">
-  </input>
-  <span class="form_error" ng-show="GOINPUTNAME[DisplayName].$error.server">
+    <label for="DisplayName">Display Name</label>
+    <input type="text" id="DisplayName" ng-model="DisplayName" ng-required="false" class="input-box">
+    </input>
+    <span class="form_error" ng-show="GOINPUTNAME[DisplayName].$error.server">
     {{ GOINPUTNAME[DisplayName].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label for="Title">Title</label>
-  <input type="text" id="Title" ng-model="Title" ng-required="false">
-  </input>
-  <span class="form_error" ng-show="GOINPUTNAME[Title].$error.server">
+    <label for="Title">Title</label>
+    <input type="text" id="Title" ng-model="Title" ng-required="false" class="input-box">
+    <span class="form_error" ng-show="GOINPUTNAME[Title].$error.server">
     {{ GOINPUTNAME[Title].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label for="Message">Message</label>
-  <textarea id="Message" cols="50" rows="5" ng-model="Message" ng-required="false">
+    <label for="Message">Message</label>
+    <textarea id="Message" cols="50" rows="5" ng-model="Message" ng-required="false">
   </textarea>
-  <span class="form_error" ng-show="GOINPUTNAME[Message].$error.server">
+    <span class="form_error" ng-show="GOINPUTNAME[Message].$error.server">
     {{ GOINPUTNAME[Message].$error.server }}
   </span>
-  <div class="checkbox_row">
-    <input id="markdownInText" type="checkbox" ng-model="cbMarkdownInText"
-           ng-init="cbMarkdownInText = MarkdownInText"
-           ng-change="MarkdownInText = cbMarkdownInText"
-           ng-true-value="true" ng-false-value="false">
-    <input type="hidden" value="{{MarkdownInText}}" ng-model="MarkdownInText">
-    <label for="markdownInText">
-      Slack message formatting (See <a href="https://get.slack.help/hc/en-us/articles/202288908-How-can-I-add-formatting-to-my-messages-" target="_blank">Slack help</a>)
-    </label>
-  </div>
-  <span class="form_error" ng-show="GOINPUTNAME[MarkdownInText].$error.server">
+    <div class="checkbox_row">
+        <input id="markdownInText" type="checkbox" ng-model="cbMarkdownInText"
+               ng-init="cbMarkdownInText = MarkdownInText"
+               ng-change="MarkdownInText = cbMarkdownInText"
+               ng-true-value="true" ng-false-value="false">
+        <input type="hidden" value="{{MarkdownInText}}" ng-model="MarkdownInText">
+        <label for="markdownInText" class="slack_msg">
+            Slack message formatting (See <a
+                href="https://get.slack.help/hc/en-us/articles/202288908-How-can-I-add-formatting-to-my-messages-"
+                target="_blank">Slack help</a>)
+        </label>
+    </div>
+    <span class="form_error" ng-show="GOINPUTNAME[MarkdownInText].$error.server">
       {{ GOINPUTNAME[MarkdownInText].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label for="IconOrEmoji">Icon or Emoji</label>
-  <input type="text" id="IconOrEmoji" ng-model="IconOrEmoji" ng-required="false">
-  </input>
-  <span class="form_error" ng-show="GOINPUTNAME[IconOrEmoji].$error.server">
+    <label for="IconOrEmoji">Icon or Emoji</label>
+    <input type="text" id="IconOrEmoji" ng-model="IconOrEmoji" ng-required="false">
+    </input>
+    <span class="form_error" ng-show="GOINPUTNAME[IconOrEmoji].$error.server">
     {{ GOINPUTNAME[IconOrEmoji].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label>Color<span class="asterisk">*</span></label>
-  <div class="checkbox_row">
-    <input id="colorNone" type="radio" ng-model="ColorType" value="None">
-    <label for="colorNone">None</label>
-    <input id="colorGood" type="radio" ng-model="ColorType" value="Good">
-    <label for="colorGood">Good</label>
-    <input id="colorWarning" type="radio" ng-model="ColorType" value="Warning">
-    <label for="colorWarning">Warning</label>
-    <input id="colorDanger" type="radio" ng-model="ColorType" value="Danger">
-    <label for="colorDanger">Danger</label>
-    <input id="colorCustom" type="radio" ng-model="ColorType" value="Custom">
-    <label for="colorCustom">Custom</label>
-  </div>
-  <span class="form_error" ng-show="GOINPUTNAME[ColorType].$error.server">
+    <label>Color<span class="asterisk">*</span></label>
+    <div class="checkbox_row">
+        <input id="colorNone" type="radio" ng-model="ColorType" value="None">
+        <label for="colorNone">None</label>
+        <input id="colorGood" type="radio" ng-model="ColorType" value="Good">
+        <label for="colorGood">Good</label>
+        <input id="colorWarning" type="radio" ng-model="ColorType" value="Warning">
+        <label for="colorWarning">Warning</label>
+        <input id="colorDanger" type="radio" ng-model="ColorType" value="Danger">
+        <label for="colorDanger">Danger</label>
+        <input id="colorCustom" type="radio" ng-model="ColorType" value="Custom">
+        <label for="colorCustom">Custom</label>
+    </div>
+    <span class="form_error" ng-show="GOINPUTNAME[ColorType].$error.server">
     {{ GOINPUTNAME[ColorType].$error.server }}
   </span>
 </div>
 <div class="form_item_block">
-  <label for="Color">Custom Color<span class="asterisk" ng-show="ColorType == 'Custom'">*</span></label>
-  <div class="path_textbox">
-    <label for="Color">#</label><input type="text" id="Color" ng-model="Color" ng-disabled="ColorType != 'Custom'">
-    <span class="form_error" ng-show="GOINPUTNAME[Color].$error.server">
+    <label for="Color">Custom Color<span class="asterisk" ng-show="ColorType == 'Custom'">*</span></label>
+    <div class="path_textbox">
+        <label for="Color">#</label><input type="text" id="Color" ng-model="Color" ng-disabled="ColorType != 'Custom'">
+        <span class="form_error" ng-show="GOINPUTNAME[Color].$error.server">
       {{ GOINPUTNAME[Color].$error.server }}
     </span>
-  </div>
+    </div>
 </div>
 <div class="form_item_block">
-  <label>Error Handling</label>
-  <div class="checkbox_row">
-    <input id="failOnError" type="checkbox" ng-model="cbFailOnError"
-           ng-init="cbFailOnError = FailOnError"
-           ng-change="FailOnError = cbFailOnError"
-           ng-true-value="true" ng-false-value="false">
-    <input type="hidden" value="{{FailOnError}}" ng-model="FailOnError">
-    <label for="failOnError">
-      Fail the build if an error occurred while notifying Slack.
-    </label>
-  </div>
-  <span class="form_error" ng-show="GOINPUTNAME[FailOnError].$error.server">
+    <label>Error Handling</label>
+    <div class="checkbox_row">
+        <input id="failOnError" type="checkbox" ng-model="cbFailOnError"
+               ng-init="cbFailOnError = FailOnError"
+               ng-change="FailOnError = cbFailOnError"
+               ng-true-value="true" ng-false-value="false">
+        <input type="hidden" value="{{FailOnError}}" ng-model="FailOnError">
+        <label for="failOnError" class="slack_msg">
+            Fail the build if an error occurred while notifying Slack.
+        </label>
+    </div>
+    <span class="form_error" ng-show="GOINPUTNAME[FailOnError].$error.server">
     {{ GOINPUTNAME[FailOnError].$error.server }}
   </span>
 </div>
