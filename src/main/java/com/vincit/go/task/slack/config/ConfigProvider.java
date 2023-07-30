@@ -11,7 +11,7 @@ import java.util.Map;
 import static com.vincit.go.task.slack.config.FieldUtils.createField;
 
 public class ConfigProvider {
-
+    private static ConfigProvider instance;
     public static final String CHANNEL = "Channel";
     public static final String CHANNEL_TYPE = "ChannelType";
     public static final String MESSAGE = "Message";
@@ -40,7 +40,22 @@ public class ConfigProvider {
         fieldConfig.put(FAIL_ON_ERROR, createField("", Secure.NO, Required.NO));
     }
 
-    public static Map<String, ?> getFieldConfig() {
+        
+    
+    private ConfigProvider(){
+        
+    }
+    
+    public static ConfigProvider getInstance(){
+        if(instance==null){
+            instance=new ConfigProvider();
+        }
+        return instance;
+    }
+    
+    
+    
+        public static Map<String, ?> getFieldConfig() {
         return fieldConfig;
     }
 
